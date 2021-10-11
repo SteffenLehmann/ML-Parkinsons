@@ -223,55 +223,17 @@ pre code {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuICBza2ltKGRhdGEpXG5gYGAifQ== -->
-<pre class="r"><code>  skim(data)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuT3ZlcnZpZXcgPC0gc2tpbShkYXRhKVxuT3ZlcnZpZXdfSGVhbHRoeSA8LSBza2ltKEhlYWx0aHkpXG5PdmVydmlld19QYXJraW5zb25zIDwtIHNraW0oUGFya2luc29ucylcblxuYGBgIn0= -->
+<pre class="r"><code>Overview &lt;- skim(data)
+Overview_Healthy &lt;- skim(Healthy)
+Overview_Parkinsons &lt;- skim(Parkinsons)
+</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiLS0gRGF0YSBTdW1tYXJ5IC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLVxuICAgICAgICAgICAgICAgICAgICAgICAgICAgVmFsdWVzXG5OYW1lICAgICAgICAgICAgICAgICAgICAgICBkYXRhICBcbk51bWJlciBvZiByb3dzICAgICAgICAgICAgIDE5NiAgIFxuTnVtYmVyIG9mIGNvbHVtbnMgICAgICAgICAgMjQgICAgXG5fX19fX19fX19fX19fX19fX19fX19fXyAgICAgICAgICBcbkNvbHVtbiB0eXBlIGZyZXF1ZW5jeTogICAgICAgICAgIFxuICBjaGFyYWN0ZXIgICAgICAgICAgICAgICAgMjQgICAgXG5fX19fX19fX19fX19fX19fX19fX19fX18gICAgICAgICBcbkdyb3VwIHZhcmlhYmxlcyAgICAgICAgICAgIE5vbmUgIFxuXG4tLSBWYXJpYWJsZSB0eXBlOiBjaGFyYWN0ZXIgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG4jIEEgdGliYmxlOiAyNCB4IDhcbiAgIHNraW1fdmFyaWFibGUgbl9taXNzaW5nIGNvbXBsZXRlX3JhdGUgICBtaW4gICBtYXggZW1wdHkgbl91bmlxdWUgd2hpdGVzcGFjZVxuICogPGNocj4gICAgICAgICAgICAgPGludD4gICAgICAgICA8ZGJsPiA8aW50PiA8aW50PiA8aW50PiAgICA8aW50PiAgICAgIDxpbnQ+XG4gMSBWMSAgICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAxICAgICA0ICAgIDE0ICAgICAwICAgICAgMTk2ICAgICAgICAgIDBcbiAyIFYyICAgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgIDEgICAgIDggICAgMTEgICAgIDAgICAgICAxOTYgICAgICAgICAgMFxuIDMgVjMgICAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgMSAgICAgOSAgICAxMiAgICAgMCAgICAgIDE5NiAgICAgICAgICAwXG4gNCBWNCAgICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAxICAgICA4ICAgIDEyICAgICAwICAgICAgMTk2ICAgICAgICAgIDBcbiA1IFY1ICAgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgIDEgICAgIDcgICAgMTQgICAgIDAgICAgICAxNzQgICAgICAgICAgMFxuIDYgVjYgICAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgMSAgICAgNyAgICAxNiAgICAgMCAgICAgICAyMSAgICAgICAgICAwXG4gNyBWNyAgICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAxICAgICA3ICAgICA4ICAgICAwICAgICAgMTU2ICAgICAgICAgIDBcbiA4IFY4ICAgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgIDEgICAgIDcgICAgIDggICAgIDAgICAgICAxNjYgICAgICAgICAgMFxuIDkgVjkgICAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgMSAgICAgNyAgICAxMCAgICAgMCAgICAgIDE4MSAgICAgICAgICAwXG4xMCBWMTAgICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAxICAgICA3ICAgIDEyICAgICAwICAgICAgMTg5ICAgICAgICAgIDBcbjExIFYxMSAgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgIDEgICAgIDcgICAgMTYgICAgIDAgICAgICAxNTAgICAgICAgICAgMFxuMTIgVjEyICAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgMSAgICAgNyAgICAxMiAgICAgMCAgICAgIDE4NSAgICAgICAgICAwXG4xMyBWMTMgICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAxICAgICA3ICAgIDEyICAgICAwICAgICAgMTkwICAgICAgICAgIDBcbjE0IFYxNCAgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgIDEgICAgIDcgICAgIDggICAgIDAgICAgICAxOTAgICAgICAgICAgMFxuMTUgVjE1ICAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgMSAgICAgNyAgICAxMSAgICAgMCAgICAgIDE5MCAgICAgICAgICAwXG4xNiBWMTYgICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAxICAgICAzICAgICA3ICAgICAwICAgICAgMTg2ICAgICAgICAgIDBcbjE3IFYxNyAgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgIDEgICAgIDMgICAgIDggICAgIDAgICAgICAxOTYgICAgICAgICAgMFxuMTggVjE4ICAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgMSAgICAgMSAgICAgNiAgICAgMCAgICAgICAgMyAgICAgICAgICAwXG4xOSBWMTkgICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAxICAgICA0ICAgICA4ICAgICAwICAgICAgMTk2ICAgICAgICAgIDBcbjIwIFYyMCAgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgIDEgICAgIDMgICAgIDggICAgIDAgICAgICAxOTYgICAgICAgICAgMFxuMjEgVjIxICAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgMSAgICAgNyAgICAgOSAgICAgMCAgICAgIDE5NiAgICAgICAgICAwXG4yMiBWMjIgICAgICAgICAgICAgICAgICAgMCAgICAgICAgICAgICAxICAgICA3ICAgICA4ICAgICAwICAgICAgMTk1ICAgICAgICAgIDBcbjIzIFYyMyAgICAgICAgICAgICAgICAgICAwICAgICAgICAgICAgIDEgICAgIDIgICAgIDggICAgIDAgICAgICAxOTYgICAgICAgICAgMFxuMjQgVjI0ICAgICAgICAgICAgICAgICAgIDAgICAgICAgICAgICAgMSAgICAgMyAgICAgOCAgICAgMCAgICAgIDE5NiAgICAgICAgICAwXG4ifQ== -->
-<pre><code>-- Data Summary ------------------------
-                           Values
-Name                       data  
-Number of rows             196   
-Number of columns          24    
-_______________________          
-Column type frequency:           
-  character                24    
-________________________         
-Group variables            None  
-
--- Variable type: character ------------------------------------------------------------------------------------
-# A tibble: 24 x 8
-   skim_variable n_missing complete_rate   min   max empty n_unique whitespace
- * &lt;chr&gt;             &lt;int&gt;         &lt;dbl&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;      &lt;int&gt;
- 1 V1                    0             1     4    14     0      196          0
- 2 V2                    0             1     8    11     0      196          0
- 3 V3                    0             1     9    12     0      196          0
- 4 V4                    0             1     8    12     0      196          0
- 5 V5                    0             1     7    14     0      174          0
- 6 V6                    0             1     7    16     0       21          0
- 7 V7                    0             1     7     8     0      156          0
- 8 V8                    0             1     7     8     0      166          0
- 9 V9                    0             1     7    10     0      181          0
-10 V10                   0             1     7    12     0      189          0
-11 V11                   0             1     7    16     0      150          0
-12 V12                   0             1     7    12     0      185          0
-13 V13                   0             1     7    12     0      190          0
-14 V14                   0             1     7     8     0      190          0
-15 V15                   0             1     7    11     0      190          0
-16 V16                   0             1     3     7     0      186          0
-17 V17                   0             1     3     8     0      196          0
-18 V18                   0             1     1     6     0        3          0
-19 V19                   0             1     4     8     0      196          0
-20 V20                   0             1     3     8     0      196          0
-21 V21                   0             1     7     9     0      196          0
-22 V22                   0             1     7     8     0      195          0
-23 V23                   0             1     2     8     0      196          0
-24 V24                   0             1     3     8     0      196          0</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7ciBMb2FkIHBhY2thZ2VzLCBpbmNsdWRlPUZBTFNFfQ0KbGlicmFyeShSbWlzYykgIyBzdW1tYXJ5U0UNCmxpYnJhcnkoTUFTUykgIyBwb2xyDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkodGlkeW1vZGVscykNCmxpYnJhcnkoc2tpbXIpDQpsaWJyYXJ5KGx1YnJpZGF0ZSkgICMgZm9yIGhhbmRsaW5nIGRhdGVzIGFuZCB0aW1lDQpsaWJyYXJ5KEhtaXNjKSAgICAjIGNvcnJlbGF0aW9uDQpsaWJyYXJ5KGNvcnJwbG90KQ0KbGlicmFyeShQZXJmb3JtYW5jZUFuYWx5dGljcykNCmxpYnJhcnkoUkNvbG9yQnJld2VyKQ0KbGlicmFyeShHR2FsbHkpDQpsaWJyYXJ5KHBzeWNoKSAjIElDQw0KbGlicmFyeShnZ2JlZXN3YXJtKQ0KbGlicmFyeShkcGx5cikNCmxpYnJhcnkoZ2dwbG90MikNCmBgYA0KDQoNCmBgYHtyIGxvYWQgZGF0YSwgaW5jbHVkZT1GQUxTRX0NCmRhdGEgPC0gcmVhZC50YWJsZSgicGFya2luc29ucy5kYXRhIiwgaGVhZGVyPUZBTFNFLCBzZXA9IiwiKQ0KYGBgDQoNCg0KYGBge3IgUGFyaXR0aW9uIGRhdGEsIGluY2x1ZGU9RkFMU0V9DQpoZWFsdGh5X2xhYmVsIDwtICIxIg0KcGFya2luc29uc19sYWJlbCA8LSAiMCINCg0KZGF0YTI8LSBzdWJzZXQoZGF0YSwgZGF0YSRzdGF0dXM9PSIxIikNCg0KI0hlYWx0aHkgPC0gZGF0YSAlPiUgZmlsdGVyKHN0YXR1cz09aGVhbHRoeV9sYWJlbCkNCiNQYXJraW5zb25zIDwtIGRhdGEgJT4lIGZpbHRlcihzdGF0dXM9PXBhcmtpbnNvbnNfbGFiZWwpDQpgYGANCg0KYGBge3IgUXVpY2sgb3ZlcnZpZXd9DQogIHNraW0oZGF0YSkNCmBgYA0KDQo=</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7ciBMb2FkIHBhY2thZ2VzLCBpbmNsdWRlPUZBTFNFfQ0KbGlicmFyeShSbWlzYykgIyBzdW1tYXJ5U0UNCmxpYnJhcnkoTUFTUykgIyBwb2xyDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkodGlkeW1vZGVscykNCmxpYnJhcnkoc2tpbXIpDQpsaWJyYXJ5KGx1YnJpZGF0ZSkgICMgZm9yIGhhbmRsaW5nIGRhdGVzIGFuZCB0aW1lDQpsaWJyYXJ5KEhtaXNjKSAgICAjIGNvcnJlbGF0aW9uDQpsaWJyYXJ5KGNvcnJwbG90KQ0KbGlicmFyeShQZXJmb3JtYW5jZUFuYWx5dGljcykNCmxpYnJhcnkoUkNvbG9yQnJld2VyKQ0KbGlicmFyeShHR2FsbHkpDQpsaWJyYXJ5KHBzeWNoKSAjIElDQw0KbGlicmFyeShnZ2JlZXN3YXJtKQ0KbGlicmFyeShkcGx5cikNCmxpYnJhcnkoZ2dwbG90MikNCmBgYA0KDQoNCmBgYHtyIGxvYWQgZGF0YSwgaW5jbHVkZT1GQUxTRX0NCmRhdGEgPC0gcmVhZC50YWJsZSgicGFya2luc29ucy5kYXRhIiwgaGVhZGVyPVRSVUUsIHNlcD0iLCIpDQpgYGANCg0KDQpgYGB7ciBQYXJpdHRpb24gZGF0YSwgaW5jbHVkZT1GQUxTRX0NCmhlYWx0aHlfbGFiZWwgPC0gIjEiDQpwYXJraW5zb25zX2xhYmVsIDwtICIwIg0KDQoNCkhlYWx0aHkgPC0gZGF0YSAlPiUgZmlsdGVyKHN0YXR1cz09aGVhbHRoeV9sYWJlbCkNClBhcmtpbnNvbnMgPC0gZGF0YSAlPiUgZmlsdGVyKHN0YXR1cz09cGFya2luc29uc19sYWJlbCkNCmBgYA0KDQpgYGB7ciBRdWljayBvdmVydmlld30NCk92ZXJ2aWV3IDwtIHNraW0oZGF0YSkNCk92ZXJ2aWV3X0hlYWx0aHkgPC0gc2tpbShIZWFsdGh5KQ0KT3ZlcnZpZXdfUGFya2luc29ucyA8LSBza2ltKFBhcmtpbnNvbnMpDQoNCmBgYA0KDQo=</div>
 
 
 
