@@ -1,0 +1,4 @@
+> data <- read.table("parkinsons.data",
++                    header=FALSE,
++                    sep=","         # use "\t" for tab-delimited files
++ )
