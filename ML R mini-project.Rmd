@@ -22,6 +22,15 @@ library(ggplot2)
 library(factoextra)
 ```
 
+```{python Loading packages, include=FALSE}
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn import svm
+from sklearn.metrics import accuracy_score
+
+```
 
 ```{r load data, include=FALSE}
 data <- read.table("parkinsons.data", header=TRUE, sep=",")
@@ -40,24 +49,17 @@ Overview_Parkinsons <- skim(Parkinsons)
 ```{r Pre-processing in R}
 #Removing the labels from the data set. In this case it is the name and status
 #TODO might not need to remove name
-PPData <- data %>% select(-one_of('name'))
+PPData <- data %>% select(-one_of('name', 'status'))
 #Selecting the labels so they can be added again later to check the ML
 LabelDF <- data %>% select(one_of('name', 'status')) 
 
 ```
 
 
-
 ```{python Pre-processing in Python}
-import numpy as np
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn import svm
-from sklearn.metrics import accuracy_score
-
 #converting the data frame from R to Python
-py_data = r.PPData
+py_data = r.data
+#22 features
 
 #dropping / removing the labels from the data frame 
 X = py_data.drop(columns=['name','status'], axis=1)
@@ -65,9 +67,33 @@ X = py_data.drop(columns=['name','status'], axis=1)
 Y = py_data['status']
 
 #splits the data into a test and training test, with 80% of the data being used for training. Shuffles the data twice before spiting 
+#https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html?highlight=train_test_split#sklearn.model_selection.train_test_split
+
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=2)
+```
+
+```{python Standardize features in Python}
+#Scaling the data. 
+#https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html?highlight=standardscaler#sklearn.preprocessing.StandardScaler 
+
+scaler = StandardScaler()
+scaler.fit(X_train)
+X_train_scaled = scaler.transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+```
+
+```{python Training Support Vector Machine model in Python}
+#Training the Support Vector classifier 
+SVM_model = svm.SVC(kernel='linear')
+SVM_model.fit(X_train_scaled, Y_train)
 
 ```
 
-
-
+```{python Model evaluation in Python}
+# Calculating the accuracy score in percent on training data
+trained_X_data = SVM_model.predict(X_train_scaled)
+Accuracy_on_train_data = accuracy_score(Y_train, trained_X_data) 
+# Calculating the accuracy score in percent on test data
+test_X_data = SVM_model.predict(X_test_scaled)
+Accuracy_on_test_data = accuracy_score(Y_test, test_X_data)
+```
