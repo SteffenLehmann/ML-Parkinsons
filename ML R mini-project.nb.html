@@ -220,11 +220,10 @@ pre code {
 <!-- rnb-text-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuT3ZlcnZpZXcgPC0gc2tpbShkYXRhKVxuT3ZlcnZpZXdfSGVhbHRoeSA8LSBza2ltKEhlYWx0aHkpXG5PdmVydmlld19QYXJraW5zb25zIDwtIHNraW0oUGFya2luc29ucylcblxuYGBgIn0= -->
-<pre class="r"><code>Overview &lt;- skim(data)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI0kgYW0gbG9va2luZyBhdCB0aGUgZGlzdHJpYnV0aW9uIG9mIHRoZSBkYXRhIGFuZCB3aXRoaW4gZWFjaCBsYWJlbC4gVGhpcyBhbHNvIGNoZWNrIHRoZSBkYXRhIGZvciBlbXB0eSBjZWxscyBcbk92ZXJ2aWV3IDwtIHNraW0oZGF0YSlcbk92ZXJ2aWV3X0hlYWx0aHkgPC0gc2tpbShIZWFsdGh5KVxuT3ZlcnZpZXdfUGFya2luc29ucyA8LSBza2ltKFBhcmtpbnNvbnMpXG5cbmBgYCJ9 -->
+<pre class="r"><code>#I am looking at the distribution of the data and within each label. This also check the data for empty cells 
+Overview &lt;- skim(data)
 Overview_Healthy &lt;- skim(Healthy)
 Overview_Parkinsons &lt;- skim(Parkinsons)
 </code></pre>
@@ -232,8 +231,60 @@ Overview_Parkinsons &lt;- skim(Parkinsons)
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuI1JlbW92aW5nIHRoZSBsYWJlbHMgZnJvbSB0aGUgZGF0YSBzZXQuIEluIHRoaXMgY2FzZSBpdCBpcyB0aGUgbmFtZSBhbmQgc3RhdHVzXG4jVE9ETyBtaWdodCBub3QgbmVlZCB0byByZW1vdmUgbmFtZVxuUFBEYXRhIDwtIGRhdGEgJT4lIHNlbGVjdCgtb25lX29mKCduYW1lJykpXG4jU2VsZWN0aW5nIHRoZSBsYWJlbHMgc28gdGhleSBjYW4gYmUgYWRkZWQgYWdhaW4gbGF0ZXIgdG8gY2hlY2sgdGhlIE1MXG5MYWJlbERGIDwtIGRhdGEgJT4lIHNlbGVjdChvbmVfb2YoJ25hbWUnLCAnc3RhdHVzJykpIFxuXG5gYGAifQ== -->
+<pre class="r"><code>#Removing the labels from the data set. In this case it is the name and status
+#TODO might not need to remove name
+PPData &lt;- data %&gt;% select(-one_of(&#39;name&#39;))
+#Selecting the labels so they can be added again later to check the ML
+LabelDF &lt;- data %&gt;% select(one_of(&#39;name&#39;, &#39;status&#39;)) 
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgcHl0aG9uXG5pbXBvcnQgbnVtcHkgYXMgbnBcbmltcG9ydCBwYW5kYXMgYXMgcGRcbmZyb20gc2tsZWFybi5tb2RlbF9zZWxlY3Rpb24gaW1wb3J0IHRyYWluX3Rlc3Rfc3BsaXRcbmZyb20gc2tsZWFybi5wcmVwcm9jZXNzaW5nIGltcG9ydCBTdGFuZGFyZFNjYWxlclxuZnJvbSBza2xlYXJuIGltcG9ydCBzdm1cbmZyb20gc2tsZWFybi5tZXRyaWNzIGltcG9ydCBhY2N1cmFjeV9zY29yZVxuXG4jY29udmVydGluZyB0aGUgZGF0YSBmcmFtZSBmcm9tIFIgdG8gUHl0aG9uXG5weV9kYXRhID0gci5QUERhdGFcblxuI3NjYWxpbmcgLyBub3JtYWxpemluZyB0aGUgZGF0YVxuc2NhbGVyID0gU3RhbmRhcmRTY2FsZXIoKVxuc2NhbGVyLmZpdChweV9kYXRhKVxuYGBgIn0= -->
+<pre class="python"><code>import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn import svm
+from sklearn.metrics import accuracy_score
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7ciBMb2FkIHBhY2thZ2VzLCBpbmNsdWRlPUZBTFNFfQ0KbGlicmFyeShSbWlzYykgIyBzdW1tYXJ5U0UNCmxpYnJhcnkoTUFTUykgIyBwb2xyDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkodGlkeW1vZGVscykNCmxpYnJhcnkoc2tpbXIpDQpsaWJyYXJ5KGx1YnJpZGF0ZSkgICMgZm9yIGhhbmRsaW5nIGRhdGVzIGFuZCB0aW1lDQpsaWJyYXJ5KEhtaXNjKSAgICAjIGNvcnJlbGF0aW9uDQpsaWJyYXJ5KGNvcnJwbG90KQ0KbGlicmFyeShQZXJmb3JtYW5jZUFuYWx5dGljcykNCmxpYnJhcnkoUkNvbG9yQnJld2VyKQ0KbGlicmFyeShHR2FsbHkpDQpsaWJyYXJ5KHBzeWNoKSAjIElDQw0KbGlicmFyeShnZ2JlZXN3YXJtKQ0KbGlicmFyeShkcGx5cikNCmxpYnJhcnkoZ2dwbG90MikNCmxpYnJhcnkoZmFjdG9leHRyYSkNCmBgYA0KDQoNCmBgYHtyIGxvYWQgZGF0YSwgaW5jbHVkZT1GQUxTRX0NCmRhdGEgPC0gcmVhZC50YWJsZSgicGFya2luc29ucy5kYXRhIiwgaGVhZGVyPVRSVUUsIHNlcD0iLCIpDQpgYGANCg0KDQpgYGB7ciBQYXJpdHRpb24gZGF0YSwgaW5jbHVkZT1GQUxTRX0NCmhlYWx0aHlfbGFiZWwgPC0gIjEiDQpwYXJraW5zb25zX2xhYmVsIDwtICIwIg0KDQoNCkhlYWx0aHkgPC0gZGF0YSAlPiUgZmlsdGVyKHN0YXR1cz09aGVhbHRoeV9sYWJlbCkNClBhcmtpbnNvbnMgPC0gZGF0YSAlPiUgZmlsdGVyKHN0YXR1cz09cGFya2luc29uc19sYWJlbCkNCmBgYA0KDQpgYGB7ciBRdWljayBvdmVydmlld30NCk92ZXJ2aWV3IDwtIHNraW0oZGF0YSkNCk92ZXJ2aWV3X0hlYWx0aHkgPC0gc2tpbShIZWFsdGh5KQ0KT3ZlcnZpZXdfUGFya2luc29ucyA8LSBza2ltKFBhcmtpbnNvbnMpDQoNCmBgYA0KDQo=</div>
+#converting the data frame from R to Python
+py_data = r.PPData
+
+#scaling / normalizing the data
+scaler = StandardScaler()
+scaler.fit(py_data)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiU3RhbmRhcmRTY2FsZXIoKVxuIn0= -->
+<pre><code>StandardScaler()</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgcHl0aG9uXG5zY2FsZWRfZGF0YSA9IHNjYWxlci50cmFuc2Zvcm0ocHlfZGF0YSlcblxuXG4jZHJvcHBpbmcgLyByZW1vdmluZyB0aGUgbGFiZWxzIGZyb20gdGhlIGRhdGEgZnJhbWUgXG5YID0gc2NhbGVkX2RhdGEuZHJvcChjb2x1bW5zPVsnbmFtZScsJ3N0YXR1cyddLCBheGlzPTEpXG5gYGAifQ== -->
+<pre class="python"><code>scaled_data = scaler.transform(py_data)
+
+
+#dropping / removing the labels from the data frame 
+X = scaled_data.drop(columns=[&#39;name&#39;,&#39;status&#39;], axis=1)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiQXR0cmlidXRlRXJyb3I6ICdudW1weS5uZGFycmF5JyBvYmplY3QgaGFzIG5vIGF0dHJpYnV0ZSAnZHJvcCdcbiJ9 -->
+<pre><code>AttributeError: &#39;numpy.ndarray&#39; object has no attribute &#39;drop&#39;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgcHl0aG9uXG4jZGF0YSBmcmFtZSB0aGF0IGlzIG9ubHkgY29udGFpbmluZyB0aGUgbGFiZWxcbiNZID0gcHlfZGF0YVsnc3RhdHVzJ11cblxuI3NwbGl0cyB0aGUgZGF0YSBpbnRvIGEgdGVzdCBhbmQgdHJhaW5pbmcgdGVzdCwgd2l0aCA4MCUgb2YgdGhlIGRhdGEgYmVpbmcgdXNlZCBmb3IgdHJhaW5pbmcuIFNodWZmbGVzIHRoZSBkYXRhIHR3aWNlIGJlZm9yZSBzcGl0aW5nIFxuI1hfdHJhaW4sIFhfdGVzdCwgWV90cmFpbiwgWV90ZXN0ID0gdHJhaW5fdGVzdF9zcGxpdChYLCBZLCB0ZXN0X3NpemU9MC4yLCByYW5kb21fc3RhdGU9MilcblxuYGBgIn0= -->
+<pre class="python"><code>#data frame that is only containing the label
+#Y = py_data[&#39;status&#39;]
+
+#splits the data into a test and training test, with 80% of the data being used for training. Shuffles the data twice before spiting 
+#X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=2)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7ciBMb2FkIHBhY2thZ2VzLCBpbmNsdWRlPUZBTFNFfQ0KbGlicmFyeShSbWlzYykgIyBzdW1tYXJ5U0UNCmxpYnJhcnkoTUFTUykgIyBwb2xyDQpsaWJyYXJ5KHRpZHl2ZXJzZSkNCmxpYnJhcnkodGlkeW1vZGVscykNCmxpYnJhcnkoc2tpbXIpDQpsaWJyYXJ5KGx1YnJpZGF0ZSkgICMgZm9yIGhhbmRsaW5nIGRhdGVzIGFuZCB0aW1lDQpsaWJyYXJ5KEhtaXNjKSAgICAjIGNvcnJlbGF0aW9uDQpsaWJyYXJ5KGNvcnJwbG90KQ0KbGlicmFyeShQZXJmb3JtYW5jZUFuYWx5dGljcykNCmxpYnJhcnkoUkNvbG9yQnJld2VyKQ0KbGlicmFyeShHR2FsbHkpDQpsaWJyYXJ5KHBzeWNoKSAjIElDQw0KbGlicmFyeShnZ2JlZXN3YXJtKQ0KbGlicmFyeShkcGx5cikNCmxpYnJhcnkoZ2dwbG90MikNCmxpYnJhcnkoZmFjdG9leHRyYSkNCmBgYA0KDQoNCmBgYHtyIGxvYWQgZGF0YSwgaW5jbHVkZT1GQUxTRX0NCmRhdGEgPC0gcmVhZC50YWJsZSgicGFya2luc29ucy5kYXRhIiwgaGVhZGVyPVRSVUUsIHNlcD0iLCIpDQpgYGANCg0KDQpgYGB7ciBRdWljayBvdmVydmlld30NCiNJIGFtIGxvb2tpbmcgYXQgdGhlIGRpc3RyaWJ1dGlvbiBvZiB0aGUgZGF0YSBhbmQgd2l0aGluIGVhY2ggbGFiZWwuIFRoaXMgYWxzbyBjaGVjayB0aGUgZGF0YSBmb3IgZW1wdHkgY2VsbHMgDQpPdmVydmlldyA8LSBza2ltKGRhdGEpDQpPdmVydmlld19IZWFsdGh5IDwtIHNraW0oSGVhbHRoeSkNCk92ZXJ2aWV3X1BhcmtpbnNvbnMgPC0gc2tpbShQYXJraW5zb25zKQ0KDQpgYGANCg0KDQpgYGB7ciBQcmUtcHJvY2Vzc2luZyBpbiBSfQ0KI1JlbW92aW5nIHRoZSBsYWJlbHMgZnJvbSB0aGUgZGF0YSBzZXQuIEluIHRoaXMgY2FzZSBpdCBpcyB0aGUgbmFtZSBhbmQgc3RhdHVzDQojVE9ETyBtaWdodCBub3QgbmVlZCB0byByZW1vdmUgbmFtZQ0KUFBEYXRhIDwtIGRhdGEgJT4lIHNlbGVjdCgtb25lX29mKCduYW1lJykpDQojU2VsZWN0aW5nIHRoZSBsYWJlbHMgc28gdGhleSBjYW4gYmUgYWRkZWQgYWdhaW4gbGF0ZXIgdG8gY2hlY2sgdGhlIE1MDQpMYWJlbERGIDwtIGRhdGEgJT4lIHNlbGVjdChvbmVfb2YoJ25hbWUnLCAnc3RhdHVzJykpIA0KDQpgYGANCg0KDQoNCmBgYHtweXRob24gUHJlLXByb2Nlc3NpbmcgaW4gUHl0aG9ufQ0KaW1wb3J0IG51bXB5IGFzIG5wDQppbXBvcnQgcGFuZGFzIGFzIHBkDQpmcm9tIHNrbGVhcm4ubW9kZWxfc2VsZWN0aW9uIGltcG9ydCB0cmFpbl90ZXN0X3NwbGl0DQpmcm9tIHNrbGVhcm4ucHJlcHJvY2Vzc2luZyBpbXBvcnQgU3RhbmRhcmRTY2FsZXINCmZyb20gc2tsZWFybiBpbXBvcnQgc3ZtDQpmcm9tIHNrbGVhcm4ubWV0cmljcyBpbXBvcnQgYWNjdXJhY3lfc2NvcmUNCg0KI2NvbnZlcnRpbmcgdGhlIGRhdGEgZnJhbWUgZnJvbSBSIHRvIFB5dGhvbg0KcHlfZGF0YSA9IHIuUFBEYXRhDQoNCiNkcm9wcGluZyAvIHJlbW92aW5nIHRoZSBsYWJlbHMgZnJvbSB0aGUgZGF0YSBmcmFtZSANClggPSBweV9kYXRhLmRyb3AoY29sdW1ucz1bJ25hbWUnLCdzdGF0dXMnXSwgYXhpcz0xKQ0KI2RhdGEgZnJhbWUgdGhhdCBpcyBvbmx5IGNvbnRhaW5pbmcgdGhlIGxhYmVsDQpZID0gcHlfZGF0YVsnc3RhdHVzJ10NCg0KI3NwbGl0cyB0aGUgZGF0YSBpbnRvIGEgdGVzdCBhbmQgdHJhaW5pbmcgdGVzdCwgd2l0aCA4MCUgb2YgdGhlIGRhdGEgYmVpbmcgdXNlZCBmb3IgdHJhaW5pbmcuIFNodWZmbGVzIHRoZSBkYXRhIHR3aWNlIGJlZm9yZSBzcGl0aW5nIA0KWF90cmFpbiwgWF90ZXN0LCBZX3RyYWluLCBZX3Rlc3QgPSB0cmFpbl90ZXN0X3NwbGl0KFgsIFksIHRlc3Rfc2l6ZT0wLjIsIHJhbmRvbV9zdGF0ZT0yKQ0KDQpgYGANCg0KDQoNCg==</div>
 
 
 
