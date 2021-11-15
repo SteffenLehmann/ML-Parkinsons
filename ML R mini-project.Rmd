@@ -39,9 +39,9 @@ data <- read.table("parkinsons.data", header=TRUE, sep=",")
 
 ```{r Quick overview}
 #I am looking at the distribution of the data and within each label. This also check the data for empty cells 
-Overview <- skim(data)
-Overview_Healthy <- skim(Healthy)
-Overview_Parkinsons <- skim(Parkinsons)
+#Overview <- skim(data)
+#Overview_Healthy <- skim(Healthy)
+#Overview_Parkinsons <- skim(Parkinsons)
 
 ```
 
