@@ -96,7 +96,7 @@ X_test_scaled = scaler.transform(X_test)
 #pca with two principal components
 pca = PCA(n_components=2)
 principalComponents = pca.fit_transform(X)
-principalDf = pd.DataFrame(data = principalComponents, columns = ['principal component 1', 'principal component 2'])
+principalDf = pd.DataFrame(data = principalComponents, columns = ['PC1', 'PC2'])
 #Concatenating DataFrames
 plotDf = pd.concat([principalDf, Y], axis = 1)
 
@@ -106,7 +106,8 @@ plotDf = pd.concat([principalDf, Y], axis = 1)
 ```{r plotting 2D data}
 PCA2 <- py$plotDf
 
-PCA2_plot <- ggplot(PCA2, aes(x = Condition, y = value, color = Condition))
+ggplot(PCA2, aes(x=PC1, y=PC2, colour=status)) +
+  geom_point()
 ```
 
 ```{python Training Support Vector Machine model in Python}
