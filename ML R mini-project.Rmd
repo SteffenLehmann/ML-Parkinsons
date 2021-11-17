@@ -19,6 +19,7 @@ library(psych) # ICC
 library(ggbeeswarm)
 library(dplyr)
 library(ggplot2)
+library(reticulate)
 library(factoextra)
 ```
 
@@ -29,6 +30,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn import svm
 from sklearn.metrics import accuracy_score
+from sklearn.decomposition import PCA,TruncatedSVD
 
 ```
 
@@ -78,6 +80,7 @@ Y = py_data['status']
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=2)
 ```
 
+
 ```{python Standardize features in Python}
 #Scaling the data. 
 #https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html?highlight=standardscaler#sklearn.preprocessing.StandardScaler 
@@ -86,6 +89,24 @@ scaler = StandardScaler()
 scaler.fit(X_train)
 X_train_scaled = scaler.transform(X_train)
 X_test_scaled = scaler.transform(X_test)
+```
+
+
+```{python PCA plot of the data in Python}
+#pca with two principal components
+pca = PCA(n_components=2)
+principalComponents = pca.fit_transform(X)
+principalDf = pd.DataFrame(data = principalComponents, columns = ['principal component 1', 'principal component 2'])
+#Concatenating DataFrames
+plotDf = pd.concat([principalDf, Y], axis = 1)
+
+```
+
+
+```{r plotting 2D data}
+PCA2 <- py$plotDf
+
+PCA2_plot <- ggplot(PCA2, aes(x = Condition, y = value, color = Condition))
 ```
 
 ```{python Training Support Vector Machine model in Python}
