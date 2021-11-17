@@ -31,6 +31,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn import svm
 from sklearn.metrics import accuracy_score
 from sklearn.decomposition import PCA,TruncatedSVD
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neural_network import MLPClassifier
 
 ```
 
@@ -150,7 +152,7 @@ Accuracy_SVC_train = accuracy_score(Y_train, trained_X_data)
 test_X_data = SVM_model.predict(X_test_scaled)
 Accuracy_SVC_test = accuracy_score(Y_test, test_X_data)
 # Fit values
-SVC_fit = Accuracy_SVC_train-Accuracy_SVC_test
+Fit_SVC = Accuracy_SVC_train-Accuracy_SVC_test
 
 ```
 
@@ -167,18 +169,49 @@ Accuracy_SVM_PCA_train = accuracy_score(Y_train, SVM_PCA_train)
 SVM_PCA_test = SVM_PCA_model.predict(PCA_test)
 Accuracy_SVM_PCA_test = accuracy_score(Y_test, SVM_PCA_test)
 # Fit values
-SVC_PCA_fit = Accuracy_SVM_PCA_train-Accuracy_SVM_PCA_test
+Fit_SVC_PCA = Accuracy_SVM_PCA_train-Accuracy_SVM_PCA_test
 
 ```
 
 ```{python RandomForestClassifier in Python}
+#TODO model is over fitted, so the attributes of the model needs to be designed better
+rf_Model = RandomForestClassifier()
+rf_Model.fit(X_train_scaled, Y_train)
+
+RFC_Train =rf_Model.predict(X_train_scaled)
+Accuracy_RFC_Train = accuracy_score(Y_train, RFC_Train)
+
+RFC_Test =rf_Model.predict(X_test_scaled)
+Accuracy_RFC_Test = accuracy_score(Y_test, RFC_Test)
+
+Fit_RFC=Accuracy_RFC_Train-Accuracy_RFC_Test
+
+#With PCA
+rf_PCA_Model = RandomForestClassifier()
+rf_PCA_Model.fit(PCA_train, Y_train)
 
 
+RFC_PCA_Train =rf_PCA_Model.predict(PCA_train)
+Accuracy_RFC_PCA_Train = accuracy_score(Y_train, RFC_PCA_Train)
+
+RFC_PCA_Test =rf_PCA_Model.predict(PCA_test)
+Accuracy_RFC_PCA_Test = accuracy_score(Y_test, RFC_PCA_Test)
+
+Fit_RFC_PCA=Accuracy_RFC_PCA_Train-Accuracy_RFC_PCA_Test
 ```
 
 ```{python Neural Network in Python}
+NN = MLPClassifier(activation = 'logistic', solver = 'sgd', hidden_layer_sizes=(100), random_state=1, max_iter=3000)
+NN.fit(X_train_scaled, Y_train)
+NN_Predict = NN.predict(X_test_scaled)
+Accuracy_NN = NN.score(X_test_scaled, Y_test)
 
+NN_PCA = MLPClassifier(activation = 'logistic', solver = 'sgd', hidden_layer_sizes=(100), random_state=1, max_iter=3000)
+NN.fit(PCA_train, Y_train)
+NN_Predict_PCA = NN.predict(PCA_test)
+Accuracy_NN_PCA = NN.score(PCA_test, Y_test)
 
+Fit_NN=Accuracy_NN-Accuracy_NN_PCA
 ```
 
 ```{python Naive Bayes in Python}
