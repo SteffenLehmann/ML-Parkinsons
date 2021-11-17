@@ -91,21 +91,6 @@ X_train_scaled = scaler.transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
 ```
-
-```{python SVC in Python}
-#Training the Support Vector classifier 
-SVM_model = svm.SVC(kernel='linear')
-SVM_model.fit(X_train_scaled, Y_train)
-
-# Calculating the accuracy score in percent on training data
-trained_X_data = SVM_model.predict(X_train_scaled)
-Accuracy_on_train_data = accuracy_score(Y_train, trained_X_data) 
-# Calculating the accuracy score in percent on test data
-test_X_data = SVM_model.predict(X_test_scaled)
-Accuracy_on_test_data = accuracy_score(Y_test, test_X_data)
-
-```
-
 ```{python PCA plot of the data in Python}
 #pca with two principal components
 pca = PCA(n_components=2)
@@ -124,19 +109,25 @@ scaler.fit(plotDf)
 X_PCA_scaled = scaler.transform(plotDf)
 ```
 
-
 ```{r plotting 2D data}
 PCA2 <- py$plotDf
 scal_PCA2 <- py$X_PCA_scaled
 
 scal_PCA2Df <- as.data.frame(scal_PCA2)
-
-ggplot(PCA2, aes(x=PC1, y=PC2, colour=status)) + geom_point()
-
+# Scatter plot of PCA(n=2)
+ggplot(PCA2, aes(x=PC1, y=PC2, colour=status)) + geom_point() + stat_ellipse()
+# Shows scatter of scaled dataPCA(n=2)
 ggplot(scal_PCA2Df, aes(x=V1, y=V2, colour=V3)) + geom_point()
-```
 
-```{python PCA and SVC in Python}
+# Show the contour only PCA(n=2)
+ggplot(PCA2, aes(x=PC1, y=PC2, colour=status)) + geom_point() + geom_density_2d()
+
+# Show the area only PCA(n=2)
+ggplot(PCA2, aes(x=PC1, y=PC2, colour=status)) + geom_point() + stat_density_2d(aes(fill = ..level..), geom="polygon")
+# shows area + contour
+ggplot(PCA2, aes(x=PC1, y=PC2, colour=status)) + geom_point() + stat_density_2d(aes(fill = ..level..), geom="polygon", colour="white")
+```
+```{python PCA pipeline in Python}
 # 0.95 are the components parameter. It means that scikit-learn choose the minimum number of principal components such that 95% of the variance is retained.
 PCA_SVC = PCA(.95)
 PCA_SVC.fit(X_train_scaled)
@@ -145,7 +136,25 @@ Number_of_PC = PCA_SVC.n_components_
 #Apply the PCA fit
 PCA_train = PCA_SVC.transform(X_train_scaled)
 PCA_test = PCA_SVC.transform(X_test_scaled)
+```
 
+```{python SVC in Python}
+#Training the Support Vector classifier 
+SVM_model = svm.SVC(kernel='linear')
+SVM_model.fit(X_train_scaled, Y_train)
+
+# Calculating the accuracy score in percent on training data
+trained_X_data = SVM_model.predict(X_train_scaled)
+Accuracy_SVC_train = accuracy_score(Y_train, trained_X_data) 
+# Calculating the accuracy score in percent on test data
+test_X_data = SVM_model.predict(X_test_scaled)
+Accuracy_SVC_test = accuracy_score(Y_test, test_X_data)
+# Fit values
+SVC_fit = Accuracy_SVC_train-Accuracy_SVC_test
+
+```
+
+```{python PCA and SVC in Python}
 #Training the Support Vector classifier 
 SVM_PCA_model = svm.SVC(kernel='linear')
 SVM_PCA_model.fit(PCA_train, Y_train)
@@ -157,5 +166,24 @@ Accuracy_SVM_PCA_train = accuracy_score(Y_train, SVM_PCA_train)
 # Calculating the accuracy score in percent on test data
 SVM_PCA_test = SVM_PCA_model.predict(PCA_test)
 Accuracy_SVM_PCA_test = accuracy_score(Y_test, SVM_PCA_test)
+# Fit values
+SVC_PCA_fit = Accuracy_SVM_PCA_train-Accuracy_SVM_PCA_test
 
 ```
+
+```{python RandomForestClassifier in Python}
+
+
+```
+
+```{python Neural Network in Python}
+
+
+```
+
+```{python Naive Bayes in Python}
+
+
+```
+
+
