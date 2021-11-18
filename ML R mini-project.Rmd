@@ -207,9 +207,9 @@ NN_Predict = NN.predict(X_test_scaled)
 Accuracy_NN = NN.score(X_test_scaled, Y_test)
 
 NN_PCA = MLPClassifier(activation = 'logistic', solver = 'sgd', hidden_layer_sizes=(100), random_state=1, max_iter=3000)
-NN.fit(PCA_train, Y_train)
-NN_Predict_PCA = NN.predict(PCA_test)
-Accuracy_NN_PCA = NN.score(PCA_test, Y_test)
+NN_PCA.fit(PCA_train, Y_train)
+NN_Predict_PCA = NN_PCA.predict(PCA_test)
+Accuracy_NN_PCA = NN_PCA.score(PCA_test, Y_test)
 
 Fit_NN=Accuracy_NN-Accuracy_NN_PCA
 ```
@@ -220,3 +220,11 @@ Fit_NN=Accuracy_NN-Accuracy_NN_PCA
 ```
 
 
+```{python Model evaluation in Python}
+Models = [SVM_model, rf_Model, NN]
+Model_name = [Support Vector Classifier, Neural network]
+
+for x in Models:
+  x.score(X_test_scaled, Y_test)
+
+```
