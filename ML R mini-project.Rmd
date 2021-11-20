@@ -116,18 +116,23 @@ PCA2 <- py$plotDf
 scal_PCA2 <- py$X_PCA_scaled
 
 scal_PCA2Df <- as.data.frame(scal_PCA2)
+
+scal_PCA2Df['V3'][scal_PCA2Df['V3'] > 0] <- 1
+scal_PCA2Df['V3'][scal_PCA2Df['V3'] < 0] <- 0
+scal_PCA2Df <- scal_PCA2Df %>% rename(PC1 = V1, PC2 = V2, status = V3)
+
 # Scatter plot of PCA(n=2)
-ggplot(PCA2, aes(x=PC1, y=PC2, colour=status)) + geom_point() + stat_ellipse()
+ggplot(PCA2, aes(x=PC1, y=PC2, group=factor(status), colour=factor(status))) + geom_point() + stat_ellipse()
 # Shows scatter of scaled dataPCA(n=2)
-ggplot(scal_PCA2Df, aes(x=V1, y=V2, colour=V3)) + geom_point()
+ggplot(scal_PCA2Df, aes(x=PC1, y=PC2, group=factor(status), colour=factor(status))) + geom_point() + stat_ellipse()
 
 # Show the contour only PCA(n=2)
-ggplot(PCA2, aes(x=PC1, y=PC2, colour=status)) + geom_point() + geom_density_2d()
+ggplot(scal_PCA2Df, aes(x=PC1, y=PC2, group=factor(status), colour=factor(status))) + geom_point() + geom_density_2d()
 
 # Show the area only PCA(n=2)
-ggplot(PCA2, aes(x=PC1, y=PC2, colour=status)) + geom_point() + stat_density_2d(aes(fill = ..level..), geom="polygon")
+ggplot(scal_PCA2Df, aes(x=PC1, y=PC2, group=factor(status), colour=factor(status))) + geom_point() + stat_density_2d(aes(fill = ..level..), geom="polygon")
 # shows area + contour
-ggplot(PCA2, aes(x=PC1, y=PC2, colour=status)) + geom_point() + stat_density_2d(aes(fill = ..level..), geom="polygon", colour="white")
+ggplot(scal_PCA2Df, aes(x=PC1, y=PC2, group=factor(status), colour=factor(status))) + geom_point() + stat_density_2d(aes(fill = ..level..), geom="polygon", colour="white")
 ```
 ```{python PCA pipeline in Python}
 # 0.95 are the components parameter. It means that scikit-learn choose the minimum number of principal components such that 95% of the variance is retained.
@@ -145,86 +150,50 @@ PCA_test = PCA_SVC.transform(X_test_scaled)
 SVM_model = svm.SVC(kernel='linear')
 SVM_model.fit(X_train_scaled, Y_train)
 
-# Calculating the accuracy score in percent on training data
-trained_X_data = SVM_model.predict(X_train_scaled)
-Accuracy_SVC_train = accuracy_score(Y_train, trained_X_data) 
-# Calculating the accuracy score in percent on test data
-test_X_data = SVM_model.predict(X_test_scaled)
-Accuracy_SVC_test = accuracy_score(Y_test, test_X_data)
-# Fit values
-Fit_SVC = Accuracy_SVC_train-Accuracy_SVC_test
-
-```
-
-```{python PCA and SVC in Python}
-#Training the Support Vector classifier 
+#Training the PCA Support Vector classifier 
 SVM_PCA_model = svm.SVC(kernel='linear')
 SVM_PCA_model.fit(PCA_train, Y_train)
-
-
-# Calculating the accuracy score in percent on training data
-SVM_PCA_train =SVM_PCA_model.predict(PCA_train)
-Accuracy_SVM_PCA_train = accuracy_score(Y_train, SVM_PCA_train) 
-# Calculating the accuracy score in percent on test data
-SVM_PCA_test = SVM_PCA_model.predict(PCA_test)
-Accuracy_SVM_PCA_test = accuracy_score(Y_test, SVM_PCA_test)
-# Fit values
-Fit_SVC_PCA = Accuracy_SVM_PCA_train-Accuracy_SVM_PCA_test
-
 ```
+
 
 ```{python RandomForestClassifier in Python}
 #TODO model is over fitted, so the attributes of the model needs to be designed better
 rf_Model = RandomForestClassifier()
 rf_Model.fit(X_train_scaled, Y_train)
 
-RFC_Train =rf_Model.predict(X_train_scaled)
-Accuracy_RFC_Train = accuracy_score(Y_train, RFC_Train)
-
-RFC_Test =rf_Model.predict(X_test_scaled)
-Accuracy_RFC_Test = accuracy_score(Y_test, RFC_Test)
-
-Fit_RFC=Accuracy_RFC_Train-Accuracy_RFC_Test
 
 #With PCA
 rf_PCA_Model = RandomForestClassifier()
 rf_PCA_Model.fit(PCA_train, Y_train)
-
-
-RFC_PCA_Train =rf_PCA_Model.predict(PCA_train)
-Accuracy_RFC_PCA_Train = accuracy_score(Y_train, RFC_PCA_Train)
-
-RFC_PCA_Test =rf_PCA_Model.predict(PCA_test)
-Accuracy_RFC_PCA_Test = accuracy_score(Y_test, RFC_PCA_Test)
-
-Fit_RFC_PCA=Accuracy_RFC_PCA_Train-Accuracy_RFC_PCA_Test
 ```
 
 ```{python Neural Network in Python}
 NN = MLPClassifier(activation = 'logistic', solver = 'sgd', hidden_layer_sizes=(100), random_state=1, max_iter=3000)
 NN.fit(X_train_scaled, Y_train)
-NN_Predict = NN.predict(X_test_scaled)
-Accuracy_NN = NN.score(X_test_scaled, Y_test)
+
 
 NN_PCA = MLPClassifier(activation = 'logistic', solver = 'sgd', hidden_layer_sizes=(100), random_state=1, max_iter=3000)
 NN_PCA.fit(PCA_train, Y_train)
-NN_Predict_PCA = NN_PCA.predict(PCA_test)
-Accuracy_NN_PCA = NN_PCA.score(PCA_test, Y_test)
 
-Fit_NN=Accuracy_NN-Accuracy_NN_PCA
 ```
 
 ```{python Naive Bayes in Python}
-
 
 ```
 
 
 ```{python Model evaluation in Python}
 Models = [SVM_model, rf_Model, NN]
-Model_name = [Support Vector Classifier, Neural network]
+PCA_Models= [SVM_PCA_model, rf_PCA_Model, NN_PCA]
+Model_name = ['Support Vector Classifier','Random Forest Classifier', 'Neural network']
+AS = []
+AS_PCA = []
 
-for x in Models:
-  x.score(X_test_scaled, Y_test)
+for Model, PCA_Model in zip(Models, PCA_Models):
+  Predicted_labels= Model.predict(X_test_scaled)
+  PCA_Predicted_labels= PCA_Model.predict(PCA_test)
+  AS.append(accuracy_score(Predicted_labels, Y_test)) 
+  AS_PCA.append(accuracy_score(PCA_Predicted_labels, Y_test))
 
+Accurracy_Store = pd.DataFrame(data=[AS, AS_PCA], columns=Model_name, index=['Standard', 'PCA', ])
 ```
