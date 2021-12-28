@@ -82,8 +82,8 @@ ggplot(data = melt(corcheck, id.var = "status"), mapping = aes(x = value)) + the
 
 ```{python Pre-processing in Python}
 #converting the data frame from R to Python
-#py_data = r.data
-py_data = r.corcheck
+py_data = r.data
+#py_data = r.corcheck
 
 #Pre-processing
 #   dropping / removing the labels from the data frame 
