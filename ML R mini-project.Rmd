@@ -21,6 +21,10 @@ library(dplyr)
 library(ggplot2)
 library(reticulate) # for python
 library(factoextra)
+library(caret)
+library(ggfortify)
+library(cluster)
+library(reshape2) 
 ```
 
 ```{python Loading packages, include=FALSE}
@@ -33,7 +37,10 @@ from sklearn.metrics import accuracy_score
 from sklearn.decomposition import PCA,TruncatedSVD
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
-
+from sklearn.naive_bayes import GaussianNB
+from sklearn.model_selection import KFold
+from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import cross_val_score
 ```
 
 ```{r load data, include=FALSE}
@@ -52,27 +59,39 @@ Parkinsons <- data %>% filter(status==parkinsons_label)
 Overview <- skim(data)
 Overview_Healthy <- skim(Healthy)
 Overview_Parkinsons <- skim(Parkinsons)
-
 ```
 
 
-```{r Pre-processing in R}
-#Removing the labels from the data set. In this case it is the name and status
-#TODO might not need to remove name
-PPData <- data %>% select(-one_of('name', 'status'))
-#Selecting the labels so they can be added again later to check the ML
-LabelDF <- data %>% select(one_of('name', 'status')) 
+```{r Correlation checks}
+cordata <- data %>% dplyr::select(-name, -status)
+cordata <- cor(cordata)
+corrplot(cordata, order = "hclust", tl.cex = 0.7)
 
+highlyCor <- colnames(data)[findCorrelation(cordata, cutoff = 0.9, verbose = TRUE)]
+
+corcheck <- data[, which(!colnames(data) %in% highlyCor)]
+
+corcheck <- corcheck %>% dplyr::select(-name)
+
+```
+```{r Normality checks in R}
+
+#corcheck
+
+#Plot histograms of "_mean" variables group by diagnosis
+ggplot(data = melt(corcheck, id.var = "status"), mapping = aes(x = value)) + theme_minimal() + 
+    geom_histogram(bins = 10, aes(fill=as.factor(status)), alpha=0.5) + facet_wrap(~variable, scales =      'free_x') + labs(fill="status") + 
+  scale_fill_discrete(labels = c("Parkinson's", "Healthy")) + theme(axis.title.x = element_blank(), axis.title.y = element_blank())
 ```
 
 
 ```{python Pre-processing in Python}
 #converting the data frame from R to Python
-py_data = r.data
+py_data = r.corcheck
 #22 features
 #Pre-processing
 #   dropping / removing the labels from the data frame 
-X = py_data.drop(columns=['name','status'], axis=1)
+X = py_data.drop(columns=['status'], axis=1)
 #   data frame that is only containing the label
 Y = py_data['status']
 
@@ -92,20 +111,24 @@ scaler.fit(X_train)
 X_train_scaled = scaler.transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
+k = 5
+kf = KFold(n_splits=k, random_state=None)
+
 ```
+
 ```{python PCA plot of the data in Python}
 #pca with two principal components
 pca = PCA(n_components=2)
 principalComponents = pca.fit_transform(X)
-#first principal component contains 72.89% of the variance and the second principal component contains 21.82% of the variance.
-PCA_variance_n2 = pca.explained_variance_ratio_
+#first principal component contains 72.89% of the variance and the second principal component contains 21.82% of the variance. 
+PCA_variance_n2 = pca.explained_variance_ratio_ 
+
 principalDf = pd.DataFrame(data = principalComponents, columns = ['PC1', 'PC2'])
 
 #Concatenating DataFrames
 plotDf = pd.concat([principalDf, Y], axis = 1)
 
 #Scaling the data. 
-
 scaler = StandardScaler()
 scaler.fit(plotDf)
 X_PCA_scaled = scaler.transform(plotDf)
@@ -153,6 +176,13 @@ SVM_model.fit(X_train_scaled, Y_train)
 #Training the PCA Support Vector classifier 
 SVM_PCA_model = svm.SVC(kernel='linear')
 SVM_PCA_model.fit(PCA_train, Y_train)
+
+model=svm.SVC(kernel='linear')
+kfold_validation=KFold(10)
+
+results=cross_val_score(model,X_train_scaled,Y_train,cv=kfold_validation)
+print(np.mean(results))
+
 ```
 
 
@@ -177,17 +207,23 @@ NN_PCA.fit(PCA_train, Y_train)
 
 ```
 
-```{python Naive Bayes in Python}
+```{python Gaussian Naive Bayes in Python}
+gnb = GaussianNB()
+gnb.fit(X_train_scaled, Y_train)
 
+gnb_PCA = GaussianNB()
+gnb_PCA.fit(PCA_train, Y_train)
 ```
 
 
 ```{python Model evaluation in Python}
-Models = [SVM_model, rf_Model, NN]
-PCA_Models= [SVM_PCA_model, rf_PCA_Model, NN_PCA]
-Model_name = ['Support Vector Classifier','Random Forest Classifier', 'Neural network']
+Models = [SVM_model, rf_Model, NN, gnb]
+PCA_Models= [SVM_PCA_model, rf_PCA_Model, NN_PCA, gnb_PCA]
+Model_name = ['Support Vector Classifier','Random Forest Classifier', 'Neural network', 'Gaussian Naive Bayes']
 AS = []
 AS_PCA = []
+AS_val = []
+
 
 for Model, PCA_Model in zip(Models, PCA_Models):
   Predicted_labels= Model.predict(X_test_scaled)
@@ -195,5 +231,13 @@ for Model, PCA_Model in zip(Models, PCA_Models):
   AS.append(accuracy_score(Predicted_labels, Y_test)) 
   AS_PCA.append(accuracy_score(PCA_Predicted_labels, Y_test))
 
-Accurracy_Store = pd.DataFrame(data=[AS, AS_PCA], columns=Model_name, index=['Standard', 'PCA', ])
+#Accurracy_Store = pd.DataFrame(data=[AS, AS_PCA], columns=Model_name, index=['Standard', 'PCA'])
+
+
+for Model in Models
+  kfold_validation=KFold(10)
+  results=cross_val_score(Model,X_train_scaled,Y_train,cv=kfold_validation)
+  AS_val.append(np.mean(results))
+
+Accurracy_Store = pd.DataFrame(data=[AS, AS_PCA, AS_val], columns=Model_name, index=['Standard', 'PCA', 'Kfold'])
 ```
