@@ -47,14 +47,12 @@ from sklearn.model_selection import cross_val_score
 data <- read.table("parkinsons.data", header=TRUE, sep=",")
 ```
 
-```{r Parittion data, include=FALSE}
+```{r Quick overview, include=FALSE}
 healthy_label <- "1"
 parkinsons_label <- "0"
 Healthy <- data %>% filter(status==healthy_label)
 Parkinsons <- data %>% filter(status==parkinsons_label)
-```
 
-```{r Quick overview}
 #I am looking at the distribution of the data and within each label. This also check the data for empty cells 
 Overview <- skim(data)
 Overview_Healthy <- skim(Healthy)
@@ -69,15 +67,12 @@ corrplot(cordata, order = "hclust", tl.cex = 0.7)
 
 highlyCor <- colnames(data)[findCorrelation(cordata, cutoff = 0.9, verbose = TRUE)]
 
-corcheck <- data[, which(!colnames(data) %in% highlyCor)]
+corcheck <- data[, which(!colnames(data) %in% highlyCor)] # by pair comparation
 
 corcheck <- corcheck %>% dplyr::select(-name)
 
 ```
 ```{r Normality checks in R}
-
-#corcheck
-
 #Plot histograms of "_mean" variables group by diagnosis
 ggplot(data = melt(corcheck, id.var = "status"), mapping = aes(x = value)) + theme_minimal() + 
     geom_histogram(bins = 10, aes(fill=as.factor(status)), alpha=0.5) + facet_wrap(~variable, scales =      'free_x') + labs(fill="status") + 
@@ -87,8 +82,9 @@ ggplot(data = melt(corcheck, id.var = "status"), mapping = aes(x = value)) + the
 
 ```{python Pre-processing in Python}
 #converting the data frame from R to Python
+#py_data = r.data
 py_data = r.corcheck
-#22 features
+
 #Pre-processing
 #   dropping / removing the labels from the data frame 
 X = py_data.drop(columns=['status'], axis=1)
@@ -240,4 +236,27 @@ for Model in Models
   AS_val.append(np.mean(results))
 
 Accurracy_Store = pd.DataFrame(data=[AS, AS_PCA, AS_val], columns=Model_name, index=['Standard', 'PCA', 'Kfold'])
+```
+
+```{r SVM plot in R}
+dat <- data.frame(y=scal_PCA2Df$status, x1=scal_PCA2Df$PC1, x2=scal_PCA2Df$PC2)
+SVM_X <- scal_PCA2Df %>% dplyr::select(-status)
+SVM_Y <- scal_PCA2Df$status
+SVM_Y <- as.factor(SVM_Y)
+s <- seq(from=-3,to=5,length=400)
+
+# for standard SVM usage, do not set this `C` parameter so high
+# this will be discussed later when we talk about "soft margin" SVM
+tg <- data.frame(C=100)
+fit <- train(SVM_X, SVM_Y, method="svmLinear", tuneGrid=tg)
+alpha <- fit$finalModel@alpha[[1]]
+sv <- as.data.frame(SVM_X[fit$finalModel@SVindex,]) # the "support vectors"
+sv.y <- 2 * (as.numeric(SVM_Y[fit$finalModel@SVindex]) - 1.5)
+w <- colSums(alpha * sv.y * as.matrix(sv))
+b <- fit$finalModel@b
+grid <- expand.grid(x1=s,x2=s)
+grid$y.cont <- (as.matrix(grid[,1:2]) %*% w - b)[,1]
+ggplot(dat, aes(dat$x1,dat$x2,col=dat$y)) + geom_point() + 
+  geom_contour(data=grid, aes(x1,x2,z=y.cont), breaks=c(-1,0,1), col="black")
+
 ```
