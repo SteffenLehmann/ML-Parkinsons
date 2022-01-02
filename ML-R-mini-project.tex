@@ -1,0 +1,497 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\title{R Notebook}
+\author{}
+\date{\vspace{-2.5em}}
+
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={R Notebook},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cordata }\OtherTok{\textless{}{-}}\NormalTok{ data }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{name, }\SpecialCharTok{{-}}\NormalTok{status)}
+\NormalTok{cordata }\OtherTok{\textless{}{-}} \FunctionTok{cor}\NormalTok{(cordata)}
+\FunctionTok{corrplot}\NormalTok{(cordata, }\AttributeTok{order =} \StringTok{"hclust"}\NormalTok{, }\AttributeTok{tl.cex =} \FloatTok{0.7}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{ML-R-mini-project_files/figure-latex/Correlation checks-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{highlyCor }\OtherTok{\textless{}{-}} \FunctionTok{colnames}\NormalTok{(data)[}\FunctionTok{findCorrelation}\NormalTok{(cordata, }\AttributeTok{cutoff =} \FloatTok{0.9}\NormalTok{, }\AttributeTok{verbose =} \ConstantTok{TRUE}\NormalTok{)]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Compare row 10  and column  9 with corr  0.987 
+##   Means:  0.642 vs 0.495 so flagging column 10 
+## Compare row 9  and column  13 with corr  0.95 
+##   Means:  0.621 vs 0.482 so flagging column 9 
+## Compare row 7  and column  4 with corr  0.974 
+##   Means:  0.611 vs 0.467 so flagging column 7 
+## Compare row 4  and column  5 with corr  0.936 
+##   Means:  0.588 vs 0.452 so flagging column 4 
+## Compare row 13  and column  12 with corr  0.949 
+##   Means:  0.564 vs 0.436 so flagging column 13 
+## Compare row 14  and column  11 with corr  1 
+##   Means:  0.541 vs 0.421 so flagging column 14 
+## Compare row 11  and column  12 with corr  0.96 
+##   Means:  0.51 vs 0.407 so flagging column 11 
+## Compare row 5  and column  6 with corr  0.923 
+##   Means:  0.534 vs 0.392 so flagging column 5 
+## Compare row 6  and column  8 with corr  1 
+##   Means:  0.469 vs 0.371 so flagging column 6 
+## Compare row 8  and column  15 with corr  0.92 
+##   Means:  0.425 vs 0.359 so flagging column 8 
+## Compare row 22  and column  19 with corr  0.962 
+##   Means:  0.512 vs 0.337 so flagging column 22 
+## All correlations <= 0.9
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{corcheck }\OtherTok{\textless{}{-}}\NormalTok{ data[, }\FunctionTok{which}\NormalTok{(}\SpecialCharTok{!}\FunctionTok{colnames}\NormalTok{(data) }\SpecialCharTok{\%in\%}\NormalTok{ highlyCor)] }\CommentTok{\# by pair comparation}
+
+\NormalTok{corcheck }\OtherTok{\textless{}{-}}\NormalTok{ corcheck }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{name)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Plot histograms of "\_mean" variables group by diagnosis}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data =} \FunctionTok{melt}\NormalTok{(corcheck, }\AttributeTok{id.var =} \StringTok{"status"}\NormalTok{), }\AttributeTok{mapping =} \FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ value)) }\SpecialCharTok{+} \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+} 
+    \FunctionTok{geom\_histogram}\NormalTok{(}\AttributeTok{bins =} \DecValTok{10}\NormalTok{, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill=}\FunctionTok{as.factor}\NormalTok{(status)), }\AttributeTok{alpha=}\FloatTok{0.5}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{facet\_wrap}\NormalTok{(}\SpecialCharTok{\textasciitilde{}}\NormalTok{variable, }\AttributeTok{scales =}      \StringTok{\textquotesingle{}free\_x\textquotesingle{}}\NormalTok{) }\SpecialCharTok{+} \FunctionTok{labs}\NormalTok{(}\AttributeTok{fill=}\StringTok{"status"}\NormalTok{) }\SpecialCharTok{+} 
+  \FunctionTok{scale\_fill\_discrete}\NormalTok{(}\AttributeTok{labels =} \FunctionTok{c}\NormalTok{(}\StringTok{"Parkinson\textquotesingle{}s"}\NormalTok{, }\StringTok{"Healthy"}\NormalTok{)) }\SpecialCharTok{+} \FunctionTok{theme}\NormalTok{(}\AttributeTok{axis.title.x =} \FunctionTok{element\_blank}\NormalTok{(), }\AttributeTok{axis.title.y =} \FunctionTok{element\_blank}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{ML-R-mini-project_files/figure-latex/Normality checks in R-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#converting the data frame from R to Python}
+\CommentTok{\#py\_data = r.data}
+\NormalTok{py\_data }\OperatorTok{=}\NormalTok{ r.corcheck}
+
+\CommentTok{\#Pre{-}processing}
+\CommentTok{\#   dropping / removing the labels from the data frame }
+\NormalTok{X }\OperatorTok{=}\NormalTok{ py\_data.drop(columns}\OperatorTok{=}\NormalTok{[}\StringTok{\textquotesingle{}status\textquotesingle{}}\NormalTok{], axis}\OperatorTok{=}\DecValTok{1}\NormalTok{)}
+\CommentTok{\#   data frame that is only containing the label}
+\NormalTok{Y }\OperatorTok{=}\NormalTok{ py\_data[}\StringTok{\textquotesingle{}status\textquotesingle{}}\NormalTok{]}
+
+
+\CommentTok{\#   splits the data into a test and training test, with 80\% of the data being used for training. Shuffles the data twice before spiting }
+\CommentTok{\#https://scikit{-}learn.org/stable/modules/generated/sklearn.model\_selection.train\_test\_split.html?highlight=train\_test\_split\#sklearn.model\_selection.train\_test\_split}
+
+\NormalTok{X\_train, X\_test, Y\_train, Y\_test }\OperatorTok{=}\NormalTok{ train\_test\_split(X, Y, test\_size}\OperatorTok{=}\FloatTok{0.2}\NormalTok{, random\_state}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
+
+\CommentTok{\#Scaling the data. }
+\CommentTok{\#https://scikit{-}learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html?highlight=standardscaler\#sklearn.preprocessing.StandardScaler }
+
+\NormalTok{scaler }\OperatorTok{=}\NormalTok{ StandardScaler()}
+\CommentTok{\#Only fit on the training set}
+\NormalTok{scaler.fit(X\_train)}
+\CommentTok{\#Transform both sets}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## StandardScaler()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{X\_train\_scaled }\OperatorTok{=}\NormalTok{ scaler.transform(X\_train)}
+\NormalTok{X\_test\_scaled }\OperatorTok{=}\NormalTok{ scaler.transform(X\_test)}
+
+\NormalTok{k }\OperatorTok{=} \DecValTok{5}
+\NormalTok{kf }\OperatorTok{=}\NormalTok{ KFold(n\_splits}\OperatorTok{=}\NormalTok{k, random\_state}\OperatorTok{=}\VariableTok{None}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#pca with two principal components}
+\NormalTok{pca }\OperatorTok{=}\NormalTok{ PCA(n\_components}\OperatorTok{=}\DecValTok{2}\NormalTok{)}
+\NormalTok{principalComponents }\OperatorTok{=}\NormalTok{ pca.fit\_transform(X)}
+\CommentTok{\#first principal component contains 72.89\% of the variance and the second principal component contains 21.82\% of the variance. }
+\NormalTok{PCA\_variance\_n2 }\OperatorTok{=}\NormalTok{ pca.explained\_variance\_ratio\_ }
+
+\NormalTok{principalDf }\OperatorTok{=}\NormalTok{ pd.DataFrame(data }\OperatorTok{=}\NormalTok{ principalComponents, columns }\OperatorTok{=}\NormalTok{ [}\StringTok{\textquotesingle{}PC1\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}PC2\textquotesingle{}}\NormalTok{])}
+
+\CommentTok{\#Concatenating DataFrames}
+\NormalTok{plotDf }\OperatorTok{=}\NormalTok{ pd.concat([principalDf, Y], axis }\OperatorTok{=} \DecValTok{1}\NormalTok{)}
+
+\CommentTok{\#Scaling the data. }
+\NormalTok{scaler }\OperatorTok{=}\NormalTok{ StandardScaler()}
+\NormalTok{scaler.fit(plotDf)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## StandardScaler()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{X\_PCA\_scaled }\OperatorTok{=}\NormalTok{ scaler.transform(plotDf)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{PCA2 }\OtherTok{\textless{}{-}}\NormalTok{ py}\SpecialCharTok{$}\NormalTok{plotDf}
+\NormalTok{scal\_PCA2 }\OtherTok{\textless{}{-}}\NormalTok{ py}\SpecialCharTok{$}\NormalTok{X\_PCA\_scaled}
+
+\NormalTok{scal\_PCA2Df }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(scal\_PCA2)}
+
+\NormalTok{scal\_PCA2Df[}\StringTok{\textquotesingle{}V3\textquotesingle{}}\NormalTok{][scal\_PCA2Df[}\StringTok{\textquotesingle{}V3\textquotesingle{}}\NormalTok{] }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{] }\OtherTok{\textless{}{-}} \DecValTok{1}
+\NormalTok{scal\_PCA2Df[}\StringTok{\textquotesingle{}V3\textquotesingle{}}\NormalTok{][scal\_PCA2Df[}\StringTok{\textquotesingle{}V3\textquotesingle{}}\NormalTok{] }\SpecialCharTok{\textless{}} \DecValTok{0}\NormalTok{] }\OtherTok{\textless{}{-}} \DecValTok{0}
+\NormalTok{scal\_PCA2Df }\OtherTok{\textless{}{-}}\NormalTok{ scal\_PCA2Df }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{rename}\NormalTok{(}\AttributeTok{PC1 =}\NormalTok{ V1, }\AttributeTok{PC2 =}\NormalTok{ V2, }\AttributeTok{status =}\NormalTok{ V3)}
+
+\CommentTok{\# Scatter plot of PCA(n=2)}
+\FunctionTok{ggplot}\NormalTok{(PCA2, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{PC1, }\AttributeTok{y=}\NormalTok{PC2, }\AttributeTok{group=}\FunctionTok{factor}\NormalTok{(status), }\AttributeTok{colour=}\FunctionTok{factor}\NormalTok{(status))) }\SpecialCharTok{+} \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{stat\_ellipse}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{ML-R-mini-project_files/figure-latex/plotting 2D data-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Shows scatter of scaled dataPCA(n=2)}
+\FunctionTok{ggplot}\NormalTok{(scal\_PCA2Df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{PC1, }\AttributeTok{y=}\NormalTok{PC2, }\AttributeTok{group=}\FunctionTok{factor}\NormalTok{(status), }\AttributeTok{colour=}\FunctionTok{factor}\NormalTok{(status))) }\SpecialCharTok{+} \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{stat\_ellipse}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{ML-R-mini-project_files/figure-latex/plotting 2D data-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Show the contour only PCA(n=2)}
+\FunctionTok{ggplot}\NormalTok{(scal\_PCA2Df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{PC1, }\AttributeTok{y=}\NormalTok{PC2, }\AttributeTok{group=}\FunctionTok{factor}\NormalTok{(status), }\AttributeTok{colour=}\FunctionTok{factor}\NormalTok{(status))) }\SpecialCharTok{+} \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{geom\_density\_2d}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{ML-R-mini-project_files/figure-latex/plotting 2D data-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Show the area only PCA(n=2)}
+\FunctionTok{ggplot}\NormalTok{(scal\_PCA2Df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{PC1, }\AttributeTok{y=}\NormalTok{PC2, }\AttributeTok{group=}\FunctionTok{factor}\NormalTok{(status), }\AttributeTok{colour=}\FunctionTok{factor}\NormalTok{(status))) }\SpecialCharTok{+} \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{stat\_density\_2d}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ ..level..), }\AttributeTok{geom=}\StringTok{"polygon"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{ML-R-mini-project_files/figure-latex/plotting 2D data-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# shows area + contour}
+\FunctionTok{ggplot}\NormalTok{(scal\_PCA2Df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{PC1, }\AttributeTok{y=}\NormalTok{PC2, }\AttributeTok{group=}\FunctionTok{factor}\NormalTok{(status), }\AttributeTok{colour=}\FunctionTok{factor}\NormalTok{(status))) }\SpecialCharTok{+} \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{stat\_density\_2d}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{fill =}\NormalTok{ ..level..), }\AttributeTok{geom=}\StringTok{"polygon"}\NormalTok{, }\AttributeTok{colour=}\StringTok{"white"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{ML-R-mini-project_files/figure-latex/plotting 2D data-5.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# 0.95 are the components parameter. It means that scikit{-}learn choose the minimum number of principal components such that 95\% of the variance is retained.}
+\NormalTok{PCA\_SVC }\OperatorTok{=}\NormalTok{ PCA(}\FloatTok{.95}\NormalTok{)}
+\NormalTok{PCA\_SVC.fit(X\_train\_scaled)}
+\CommentTok{\#Number of PC\textquotesingle{}s with 95\% variance.}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## PCA(n_components=0.95)
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Number\_of\_PC }\OperatorTok{=}\NormalTok{ PCA\_SVC.n\_components\_}
+\CommentTok{\#Apply the PCA fit}
+\NormalTok{PCA\_train }\OperatorTok{=}\NormalTok{ PCA\_SVC.transform(X\_train\_scaled)}
+\NormalTok{PCA\_test }\OperatorTok{=}\NormalTok{ PCA\_SVC.transform(X\_test\_scaled)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Training the Support Vector classifier }
+\NormalTok{SVM\_model }\OperatorTok{=}\NormalTok{ svm.SVC(kernel}\OperatorTok{=}\StringTok{\textquotesingle{}linear\textquotesingle{}}\NormalTok{)}
+\NormalTok{SVM\_model.fit(X\_train\_scaled, Y\_train)}
+
+\CommentTok{\#Training the PCA Support Vector classifier }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## SVC(kernel='linear')
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{SVM\_PCA\_model }\OperatorTok{=}\NormalTok{ svm.SVC(kernel}\OperatorTok{=}\StringTok{\textquotesingle{}linear\textquotesingle{}}\NormalTok{)}
+\NormalTok{SVM\_PCA\_model.fit(PCA\_train, Y\_train)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## SVC(kernel='linear')
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model}\OperatorTok{=}\NormalTok{svm.SVC(kernel}\OperatorTok{=}\StringTok{\textquotesingle{}linear\textquotesingle{}}\NormalTok{)}
+\NormalTok{kfold\_validation}\OperatorTok{=}\NormalTok{KFold(}\DecValTok{10}\NormalTok{)}
+
+\NormalTok{results}\OperatorTok{=}\NormalTok{cross\_val\_score(model,X\_train\_scaled,Y\_train,cv}\OperatorTok{=}\NormalTok{kfold\_validation)}
+\BuiltInTok{print}\NormalTok{(np.mean(results))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 0.8583333333333334
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#TODO model is over fitted, so the attributes of the model needs to be designed better}
+\NormalTok{rf\_Model }\OperatorTok{=}\NormalTok{ RandomForestClassifier()}
+\NormalTok{rf\_Model.fit(X\_train\_scaled, Y\_train)}
+
+
+\CommentTok{\#With PCA}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## RandomForestClassifier()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rf\_PCA\_Model }\OperatorTok{=}\NormalTok{ RandomForestClassifier()}
+\NormalTok{rf\_PCA\_Model.fit(PCA\_train, Y\_train)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## RandomForestClassifier()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{NN }\OperatorTok{=}\NormalTok{ MLPClassifier(activation }\OperatorTok{=} \StringTok{\textquotesingle{}logistic\textquotesingle{}}\NormalTok{, solver }\OperatorTok{=} \StringTok{\textquotesingle{}sgd\textquotesingle{}}\NormalTok{, hidden\_layer\_sizes}\OperatorTok{=}\NormalTok{(}\DecValTok{100}\NormalTok{), random\_state}\OperatorTok{=}\DecValTok{1}\NormalTok{, max\_iter}\OperatorTok{=}\DecValTok{3000}\NormalTok{)}
+\NormalTok{NN.fit(X\_train\_scaled, Y\_train)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## MLPClassifier(activation='logistic', hidden_layer_sizes=100, max_iter=3000,
+##               random_state=1, solver='sgd')
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{NN\_PCA }\OperatorTok{=}\NormalTok{ MLPClassifier(activation }\OperatorTok{=} \StringTok{\textquotesingle{}logistic\textquotesingle{}}\NormalTok{, solver }\OperatorTok{=} \StringTok{\textquotesingle{}sgd\textquotesingle{}}\NormalTok{, hidden\_layer\_sizes}\OperatorTok{=}\NormalTok{(}\DecValTok{100}\NormalTok{), random\_state}\OperatorTok{=}\DecValTok{1}\NormalTok{, max\_iter}\OperatorTok{=}\DecValTok{3000}\NormalTok{)}
+\NormalTok{NN\_PCA.fit(PCA\_train, Y\_train)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## MLPClassifier(activation='logistic', hidden_layer_sizes=100, max_iter=3000,
+##               random_state=1, solver='sgd')
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gnb }\OperatorTok{=}\NormalTok{ GaussianNB()}
+\NormalTok{gnb.fit(X\_train\_scaled, Y\_train)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## GaussianNB()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{gnb\_PCA }\OperatorTok{=}\NormalTok{ GaussianNB()}
+\NormalTok{gnb\_PCA.fit(PCA\_train, Y\_train)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## GaussianNB()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Models }\OperatorTok{=}\NormalTok{ [SVM\_model, rf\_Model, NN, gnb]}
+\NormalTok{PCA\_Models}\OperatorTok{=}\NormalTok{ [SVM\_PCA\_model, rf\_PCA\_Model, NN\_PCA, gnb\_PCA]}
+\NormalTok{Model\_name }\OperatorTok{=}\NormalTok{ [}\StringTok{\textquotesingle{}Support Vector Classifier\textquotesingle{}}\NormalTok{,}\StringTok{\textquotesingle{}Random Forest Classifier\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Neural network\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Gaussian Naive Bayes\textquotesingle{}}\NormalTok{]}
+\NormalTok{AS }\OperatorTok{=}\NormalTok{ []}
+\NormalTok{AS\_PCA }\OperatorTok{=}\NormalTok{ []}
+\NormalTok{AS\_val }\OperatorTok{=}\NormalTok{ []}
+
+
+\ControlFlowTok{for}\NormalTok{ Model, PCA\_Model }\KeywordTok{in} \BuiltInTok{zip}\NormalTok{(Models, PCA\_Models):}
+\NormalTok{  Predicted\_labels}\OperatorTok{=}\NormalTok{ Model.predict(X\_test\_scaled)}
+\NormalTok{  PCA\_Predicted\_labels}\OperatorTok{=}\NormalTok{ PCA\_Model.predict(PCA\_test)}
+\NormalTok{  AS.append(accuracy\_score(Predicted\_labels, Y\_test)) }
+\NormalTok{  AS\_PCA.append(accuracy\_score(PCA\_Predicted\_labels, Y\_test))}
+
+\NormalTok{Accurracy\_Store }\OperatorTok{=}\NormalTok{ pd.DataFrame(data}\OperatorTok{=}\NormalTok{[AS, AS\_PCA], columns}\OperatorTok{=}\NormalTok{Model\_name, index}\OperatorTok{=}\NormalTok{[}\StringTok{\textquotesingle{}Standard\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}PCA\textquotesingle{}}\NormalTok{])}
+
+
+\CommentTok{\#for Model in Models}
+\CommentTok{\#  kfold\_validation=KFold(10)}
+\CommentTok{\#  results=cross\_val\_score(Model,X\_train\_scaled,Y\_train,cv=kfold\_validation)}
+\CommentTok{\#  AS\_val.append(np.mean(results))}
+
+\CommentTok{\#Accurracy\_Store = pd.DataFrame(data=[AS, AS\_PCA, AS\_val], columns=Model\_name, index=[\textquotesingle{}Standard\textquotesingle{}, \textquotesingle{}PCA\textquotesingle{}, \textquotesingle{}Kfold\textquotesingle{}])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{dat }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{y=}\NormalTok{scal\_PCA2Df}\SpecialCharTok{$}\NormalTok{status, }\AttributeTok{x1=}\NormalTok{scal\_PCA2Df}\SpecialCharTok{$}\NormalTok{PC1, }\AttributeTok{x2=}\NormalTok{scal\_PCA2Df}\SpecialCharTok{$}\NormalTok{PC2)}
+\NormalTok{SVM\_X }\OtherTok{\textless{}{-}}\NormalTok{ scal\_PCA2Df }\SpecialCharTok{\%\textgreater{}\%}\NormalTok{ dplyr}\SpecialCharTok{::}\FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{status)}
+\NormalTok{SVM\_Y }\OtherTok{\textless{}{-}}\NormalTok{ scal\_PCA2Df}\SpecialCharTok{$}\NormalTok{status}
+\NormalTok{SVM\_Y }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(SVM\_Y)}
+\NormalTok{s }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\AttributeTok{from=}\SpecialCharTok{{-}}\DecValTok{3}\NormalTok{,}\AttributeTok{to=}\DecValTok{5}\NormalTok{,}\AttributeTok{length=}\DecValTok{400}\NormalTok{)}
+
+\CommentTok{\# for standard SVM usage, do not set this \textasciigrave{}C\textasciigrave{} parameter so high}
+\CommentTok{\# this will be discussed later when we talk about "soft margin" SVM}
+\NormalTok{tg }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{C=}\DecValTok{100}\NormalTok{)}
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{train}\NormalTok{(SVM\_X, SVM\_Y, }\AttributeTok{method=}\StringTok{"svmLinear"}\NormalTok{, }\AttributeTok{tuneGrid=}\NormalTok{tg)}
+\NormalTok{alpha }\OtherTok{\textless{}{-}}\NormalTok{ fit}\SpecialCharTok{$}\NormalTok{finalModel}\SpecialCharTok{@}\NormalTok{alpha[[}\DecValTok{1}\NormalTok{]]}
+\NormalTok{sv }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(SVM\_X[fit}\SpecialCharTok{$}\NormalTok{finalModel}\SpecialCharTok{@}\NormalTok{SVindex,]) }\CommentTok{\# the "support vectors"}
+\NormalTok{sv.y }\OtherTok{\textless{}{-}} \DecValTok{2} \SpecialCharTok{*}\NormalTok{ (}\FunctionTok{as.numeric}\NormalTok{(SVM\_Y[fit}\SpecialCharTok{$}\NormalTok{finalModel}\SpecialCharTok{@}\NormalTok{SVindex]) }\SpecialCharTok{{-}} \FloatTok{1.5}\NormalTok{)}
+\NormalTok{w }\OtherTok{\textless{}{-}} \FunctionTok{colSums}\NormalTok{(alpha }\SpecialCharTok{*}\NormalTok{ sv.y }\SpecialCharTok{*} \FunctionTok{as.matrix}\NormalTok{(sv))}
+\NormalTok{b }\OtherTok{\textless{}{-}}\NormalTok{ fit}\SpecialCharTok{$}\NormalTok{finalModel}\SpecialCharTok{@}\NormalTok{b}
+\NormalTok{grid }\OtherTok{\textless{}{-}} \FunctionTok{expand.grid}\NormalTok{(}\AttributeTok{x1=}\NormalTok{s,}\AttributeTok{x2=}\NormalTok{s)}
+\NormalTok{grid}\SpecialCharTok{$}\NormalTok{y.cont }\OtherTok{\textless{}{-}}\NormalTok{ (}\FunctionTok{as.matrix}\NormalTok{(grid[,}\DecValTok{1}\SpecialCharTok{:}\DecValTok{2}\NormalTok{]) }\SpecialCharTok{\%*\%}\NormalTok{ w }\SpecialCharTok{{-}}\NormalTok{ b)[,}\DecValTok{1}\NormalTok{]}
+\FunctionTok{ggplot}\NormalTok{(dat, }\FunctionTok{aes}\NormalTok{(dat}\SpecialCharTok{$}\NormalTok{x1,dat}\SpecialCharTok{$}\NormalTok{x2,}\AttributeTok{col=}\NormalTok{dat}\SpecialCharTok{$}\NormalTok{y)) }\SpecialCharTok{+} \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+} 
+  \FunctionTok{geom\_contour}\NormalTok{(}\AttributeTok{data=}\NormalTok{grid, }\FunctionTok{aes}\NormalTok{(x1,x2,}\AttributeTok{z=}\NormalTok{y.cont), }\AttributeTok{breaks=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{), }\AttributeTok{col=}\StringTok{"black"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Use of `dat$x1` is discouraged. Use `x1` instead.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Use of `dat$x2` is discouraged. Use `x2` instead.
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Use of `dat$y` is discouraged. Use `y` instead.
+\end{verbatim}
+
+\includegraphics{ML-R-mini-project_files/figure-latex/SVM plot in R-1.pdf}
+
+\end{document}

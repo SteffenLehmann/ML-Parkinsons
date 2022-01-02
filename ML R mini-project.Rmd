@@ -1,6 +1,7 @@
 ---
 title: "R Notebook"
-output: html_notebook
+author: Steffen Lehmann - 20153945
+output: word_document 
 ---
 
 ```{r Load packages, include=FALSE}
@@ -82,8 +83,8 @@ ggplot(data = melt(corcheck, id.var = "status"), mapping = aes(x = value)) + the
 
 ```{python Pre-processing in Python}
 #converting the data frame from R to Python
-py_data = r.data
-#py_data = r.corcheck
+#py_data = r.data
+py_data = r.corcheck
 
 #Pre-processing
 #   dropping / removing the labels from the data frame 
@@ -211,7 +212,6 @@ gnb_PCA = GaussianNB()
 gnb_PCA.fit(PCA_train, Y_train)
 ```
 
-
 ```{python Model evaluation in Python}
 Models = [SVM_model, rf_Model, NN, gnb]
 PCA_Models= [SVM_PCA_model, rf_PCA_Model, NN_PCA, gnb_PCA]
@@ -227,15 +227,15 @@ for Model, PCA_Model in zip(Models, PCA_Models):
   AS.append(accuracy_score(Predicted_labels, Y_test)) 
   AS_PCA.append(accuracy_score(PCA_Predicted_labels, Y_test))
 
-#Accurracy_Store = pd.DataFrame(data=[AS, AS_PCA], columns=Model_name, index=['Standard', 'PCA'])
+Accurracy_Store = pd.DataFrame(data=[AS, AS_PCA], columns=Model_name, index=['Standard', 'PCA'])
 
 
-for Model in Models
-  kfold_validation=KFold(10)
-  results=cross_val_score(Model,X_train_scaled,Y_train,cv=kfold_validation)
-  AS_val.append(np.mean(results))
+#for Model in Models
+#  kfold_validation=KFold(10)
+#  results=cross_val_score(Model,X_train_scaled,Y_train,cv=kfold_validation)
+#  AS_val.append(np.mean(results))
 
-Accurracy_Store = pd.DataFrame(data=[AS, AS_PCA, AS_val], columns=Model_name, index=['Standard', 'PCA', 'Kfold'])
+#Accurracy_Store = pd.DataFrame(data=[AS, AS_PCA, AS_val], columns=Model_name, index=['Standard', 'PCA', 'Kfold'])
 ```
 
 ```{r SVM plot in R}
