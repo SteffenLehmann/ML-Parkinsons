@@ -42,6 +42,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import KFold
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import RepeatedKFold
 ```
 
 ```{r load data, include=FALSE}
@@ -91,26 +92,6 @@ py_data = r.corcheck
 X = py_data.drop(columns=['status'], axis=1)
 #   data frame that is only containing the label
 Y = py_data['status']
-
-
-#   splits the data into a test and training test, with 80% of the data being used for training. Shuffles the data twice before spiting 
-#https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html?highlight=train_test_split#sklearn.model_selection.train_test_split
-
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=2)
-
-#Scaling the data. 
-#https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html?highlight=standardscaler#sklearn.preprocessing.StandardScaler 
-
-scaler = StandardScaler()
-#Only fit on the training set
-scaler.fit(X_train)
-#Transform both sets
-X_train_scaled = scaler.transform(X_train)
-X_test_scaled = scaler.transform(X_test)
-
-k = 5
-kf = KFold(n_splits=k, random_state=None)
-
 ```
 
 ```{python PCA plot of the data in Python}
@@ -155,30 +136,22 @@ ggplot(scal_PCA2Df, aes(x=PC1, y=PC2, group=factor(status), colour=factor(status
 ggplot(scal_PCA2Df, aes(x=PC1, y=PC2, group=factor(status), colour=factor(status))) + geom_point() + stat_density_2d(aes(fill = ..level..), geom="polygon", colour="white")
 ```
 ```{python PCA pipeline in Python}
-# 0.95 are the components parameter. It means that scikit-learn choose the minimum number of principal components such that 95% of the variance is retained.
-PCA_SVC = PCA(.95)
-PCA_SVC.fit(X_train_scaled)
-#Number of PC's with 95% variance.
-Number_of_PC = PCA_SVC.n_components_
-#Apply the PCA fit
-PCA_train = PCA_SVC.transform(X_train_scaled)
-PCA_test = PCA_SVC.transform(X_test_scaled)
+# 0.95 are the components parameter. It means that scikit-learn choose the minimum number of principal components such that 95% of the variance are retained.
+PCA_95 = PCA(.95)
+
+PCAX=PCA_95.fit_transform(X)
 ```
 
 ```{python SVC in Python}
 #Training the Support Vector classifier 
 SVM_model = svm.SVC(kernel='linear')
-SVM_model.fit(X_train_scaled, Y_train)
+SVM_model_scores = cross_val_score(SVM_model, X, Y, cv=5)
+
 
 #Training the PCA Support Vector classifier 
 SVM_PCA_model = svm.SVC(kernel='linear')
-SVM_PCA_model.fit(PCA_train, Y_train)
+SVM_PCA_model_scores = cross_val_score(SVM_PCA_model, PCAX, Y, cv=5)
 
-model=svm.SVC(kernel='linear')
-kfold_validation=KFold(10)
-
-results=cross_val_score(model,X_train_scaled,Y_train,cv=kfold_validation)
-print(np.mean(results))
 
 ```
 
@@ -186,56 +159,49 @@ print(np.mean(results))
 ```{python RandomForestClassifier in Python}
 #TODO model is over fitted, so the attributes of the model needs to be designed better
 rf_Model = RandomForestClassifier()
-rf_Model.fit(X_train_scaled, Y_train)
+rf_Model_scores = cross_val_score(rf_Model, X, Y, cv=5)
 
 
 #With PCA
 rf_PCA_Model = RandomForestClassifier()
-rf_PCA_Model.fit(PCA_train, Y_train)
+rf_PCA_Model_scores = cross_val_score(rf_PCA_Model, PCAX, Y, cv=5)
 ```
 
 ```{python Neural Network in Python}
 NN = MLPClassifier(activation = 'logistic', solver = 'sgd', hidden_layer_sizes=(100), random_state=1, max_iter=3000)
-NN.fit(X_train_scaled, Y_train)
+NN_scores = cross_val_score(NN, X, Y, cv=5)
 
 
 NN_PCA = MLPClassifier(activation = 'logistic', solver = 'sgd', hidden_layer_sizes=(100), random_state=1, max_iter=3000)
-NN_PCA.fit(PCA_train, Y_train)
+NN_PCA_scores = cross_val_score(NN_PCA, PCAX, Y, cv=5)
 
 ```
 
 ```{python Gaussian Naive Bayes in Python}
 gnb = GaussianNB()
-gnb.fit(X_train_scaled, Y_train)
+gnb_scores = cross_val_score(gnb, X, Y, cv=5)
 
 gnb_PCA = GaussianNB()
-gnb_PCA.fit(PCA_train, Y_train)
+gnb_PCA_scores = cross_val_score(gnb_PCA, PCAX, Y, cv=5)
 ```
 
 ```{python Model evaluation in Python}
-Models = [SVM_model, rf_Model, NN, gnb]
-PCA_Models= [SVM_PCA_model, rf_PCA_Model, NN_PCA, gnb_PCA]
+Models = [SVM_model_scores, rf_Model_scores, NN_scores, gnb_scores]
+PCA_Models= [SVM_PCA_model_scores, rf_PCA_Model_scores, NN_PCA_scores, gnb_PCA_scores]
 Model_name = ['Support Vector Classifier','Random Forest Classifier', 'Neural network', 'Gaussian Naive Bayes']
 AS = []
 AS_PCA = []
-AS_val = []
-
+AS_SD = []
+AS_PCA_SD = []
 
 for Model, PCA_Model in zip(Models, PCA_Models):
-  Predicted_labels= Model.predict(X_test_scaled)
-  PCA_Predicted_labels= PCA_Model.predict(PCA_test)
-  AS.append(accuracy_score(Predicted_labels, Y_test)) 
-  AS_PCA.append(accuracy_score(PCA_Predicted_labels, Y_test))
+  AS.append(np.mean(Model)) 
+  AS_SD.append(np.std(Model))
+  AS_PCA.append(np.mean(PCA_Model))
+  AS_PCA_SD.append(np.std(PCA_Model))
 
-Accurracy_Store = pd.DataFrame(data=[AS, AS_PCA], columns=Model_name, index=['Standard', 'PCA'])
+Accurracy_Store = pd.DataFrame(data=[AS,AS_SD, AS_PCA, AS_PCA_SD], columns=Model_name, index=['Standard','SD', 'PCA', 'PCA_SD'])
 
-
-#for Model in Models
-#  kfold_validation=KFold(10)
-#  results=cross_val_score(Model,X_train_scaled,Y_train,cv=kfold_validation)
-#  AS_val.append(np.mean(results))
-
-#Accurracy_Store = pd.DataFrame(data=[AS, AS_PCA, AS_val], columns=Model_name, index=['Standard', 'PCA', 'Kfold'])
 ```
 
 ```{r SVM plot in R}
