@@ -92,6 +92,15 @@ py_data = r.corcheck
 X = py_data.drop(columns=['status'], axis=1)
 #   data frame that is only containing the label
 Y = py_data['status']
+
+#Scaling the data. 
+#https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html?highlight=standardscaler#sklearn.preprocessing.StandardScaler 
+scaler = StandardScaler()
+#Only fit on the training set
+scaler.fit(X)
+#Transform both sets
+X = scaler.transform(X)
+
 ```
 
 ```{python PCA plot of the data in Python}
