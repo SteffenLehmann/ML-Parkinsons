@@ -43,6 +43,7 @@ from sklearn.model_selection import KFold
 from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import RepeatedKFold
+import matplotlib.pyplot as plt # for plotting
 ```
 
 ```{r load data, include=FALSE}
@@ -90,6 +91,7 @@ py_data = r.corcheck
 #Pre-processing
 #   dropping / removing the labels from the data frame 
 X = py_data.drop(columns=['status'], axis=1)
+XforPCA = py_data.drop(columns=['status'], axis=1)
 #   data frame that is only containing the label
 Y = py_data['status']
 
@@ -106,7 +108,7 @@ X = scaler.transform(X)
 ```{python PCA plot of the data in Python}
 #pca with two principal components
 pca = PCA(n_components=2)
-principalComponents = pca.fit_transform(X)
+principalComponents = pca.fit_transform(XforPCA)
 #first principal component contains 72.89% of the variance and the second principal component contains 21.82% of the variance. 
 PCA_variance_n2 = pca.explained_variance_ratio_ 
 
@@ -146,9 +148,26 @@ ggplot(scal_PCA2Df, aes(x=PC1, y=PC2, group=factor(status), colour=factor(status
 ```
 ```{python PCA pipeline in Python}
 # 0.95 are the components parameter. It means that scikit-learn choose the minimum number of principal components such that 95% of the variance are retained.
-PCA_95 = PCA(.95)
+PCA_95 = PCA()
 
+plt.plot(np.cumsum(PCA_95.explained_variance_ratio_))
+plt.xlabel('number of components')
+plt.ylabel('cumulative explained variance');
+plt.show()
+
+PCA_95 = PCA(n_components =7)
 PCAX=PCA_95.fit_transform(X)
+
+Number_of_PC = PCA_95.n_components_
+
+n_components = len(PCA_95.explained_variance_ratio_)
+
+#Most important feature in per components
+mostimportant = [np.abs(PCA_95.components_[i]).argmax() for i in range(n_components)]
+initial_feature_names = XforPCA.columns
+most_important_names = [initial_feature_names[mostimportant[i]] for i in range(n_components)]
+
+
 ```
 
 ```{python SVC in Python}
