@@ -44,6 +44,10 @@ from sklearn.model_selection import StratifiedKFold
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import RepeatedKFold
 import matplotlib.pyplot as plt # for plotting
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import plot_confusion_matrix
+from mlxtend.plotting import plot_decision_regions
+from sklearn.model_selection import cross_val_predict
 ```
 
 ```{r load data, include=FALSE}
@@ -244,6 +248,14 @@ for Model, PCA_Model in zip(Models, PCA_Models):
 
 Accurracy_Store = pd.DataFrame(data=[AS,AS_SD, AS_PCA, AS_PCA_SD], columns=Model_name, index=['Standard','SD', 'PCA', 'PCA_SD'])
 
+```
+
+```{python Confusion Matrix}
+y_pred = cross_val_predict(SVM_model, X, Y, cv=5)
+cm = confusion_matrix(Y, y_pred)
+SVM_CM = SVM_model.fit(X, Y)
+plot_confusion_matrix(SVM_CM, X, Y)  
+plt.show()
 ```
 
 ```{r SVM plot in R}
