@@ -73,13 +73,25 @@ highlyCor <- colnames(data)[findCorrelation(cordata, cutoff = 0.9, verbose = TRU
 corcheck <- data[, which(!colnames(data) %in% highlyCor)] # by pair comparation
 
 corcheck <- corcheck %>% dplyr::select(-name)
-
 ```
 ```{r Normality checks in R}
 #Plot histograms of "_mean" variables group by diagnosis
 ggplot(data = melt(corcheck, id.var = "status"), mapping = aes(x = value)) + theme_minimal() + 
     geom_histogram(bins = 10, aes(fill=as.factor(status)), alpha=0.5) + facet_wrap(~variable, scales =      'free_x') + labs(fill="status") + 
   scale_fill_discrete(labels = c("Parkinson's", "Healthy")) + theme(axis.title.x = element_blank(), axis.title.y = element_blank())
+
+Normal_Check<- corcheck %>% dplyr::select(-status)
+shapiro.test(Normal_Check$MDVP.Fo.Hz.)
+shapiro.test(Normal_Check$MDVP.Fhi.Hz.)
+shapiro.test(Normal_Check$Shimmer.APQ3)
+shapiro.test(Normal_Check$Shimmer.DDA)
+shapiro.test(Normal_Check$NHR)
+shapiro.test(Normal_Check$HNR)
+shapiro.test(Normal_Check$RPDE)
+shapiro.test(Normal_Check$DFA)
+shapiro.test(Normal_Check$spread1)
+shapiro.test(Normal_Check$D2)
+shapiro.test(Normal_Check$PPE)
 ```
 
 
@@ -168,8 +180,6 @@ n_components = len(PCAX.explained_variance_ratio_)
 mostimportant = [np.abs(PCA_95.components_[i]).argmax() for i in range(n_components)]
 initial_feature_names = XforPCA.columns
 most_important_names = [initial_feature_names[mostimportant[i]] for i in range(n_components)]
-
-
 ```
 
 ```{python SVC in Python}
@@ -181,8 +191,6 @@ SVM_model_scores = cross_val_score(SVM_model, X, Y, cv=5)
 #Training the PCA Support Vector classifier 
 SVM_PCA_model = svm.SVC(kernel='linear')
 SVM_PCA_model_scores = cross_val_score(SVM_PCA_model, PCAX, Y, cv=5)
-
-
 ```
 
 
