@@ -149,18 +149,20 @@ ggplot(scal_PCA2Df, aes(x=PC1, y=PC2, group=factor(status), colour=factor(status
 ```{python PCA pipeline in Python}
 # 0.95 are the components parameter. It means that scikit-learn choose the minimum number of principal components such that 95% of the variance are retained.
 PCA_95 = PCA()
-
+PCA_95.fit_transform(X)
 plt.plot(np.cumsum(PCA_95.explained_variance_ratio_))
 plt.xlabel('number of components')
 plt.ylabel('cumulative explained variance');
 plt.show()
 
-PCA_95 = PCA(n_components =7)
-PCAX=PCA_95.fit_transform(X)
+PCAX = PCA(n_components =7)
+PCAX.fit_transform(X)
 
-Number_of_PC = PCA_95.n_components_
 
-n_components = len(PCA_95.explained_variance_ratio_)
+
+Number_of_PC = PCAX.n_components_
+
+n_components = len(PCAX.explained_variance_ratio_)
 
 #Most important feature in per components
 mostimportant = [np.abs(PCA_95.components_[i]).argmax() for i in range(n_components)]
@@ -208,6 +210,10 @@ NN_PCA_scores = cross_val_score(NN_PCA, PCAX, Y, cv=5)
 ```{python Gaussian Naive Bayes in Python}
 gnb = GaussianNB()
 gnb_scores = cross_val_score(gnb, X, Y, cv=5)
+
+gnb1 = GaussianNB()
+gnb1.fit(X,Y)
+gnb1.class_prior_
 
 gnb_PCA = GaussianNB()
 gnb_PCA_scores = cross_val_score(gnb_PCA, PCAX, Y, cv=5)
