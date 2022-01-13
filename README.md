@@ -1,5 +1,5 @@
 # Parkinson's disease Mini-project
-This README file contains the presentation to explain the project
+This README contains the revised version presentation that I used for my Machine learning exam.
 ### Steffen Lehmann. 
 
 
