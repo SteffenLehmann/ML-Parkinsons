@@ -96,26 +96,27 @@ Raw Data             | Standardized Data
 
 ## Gaussian Naive Bayes
 
-Priors
+```
+● Priors
+    ● 0.25 for Healthy
+    ● 0.75 for Parkinson’s
+● Variance and mean
+```
+![](./Images/Bayes.png)
 
-```
-● 0.25 for Healthy
-● 0.75 for Parkinson’s
-```
-Variance and mean
 
 ```
 ● P(h): the probability of hypothesis h being true
-(regardless of the data). This is known as the
-prior probability of h.
+  (regardless of the data). This is known as the
+  prior probability of h.
 ● P(D): the probability of the data (regardless of
-the hypothesis). This is known as the evidence.
+  the hypothesis). This is known as the evidence.
 ● P(h|D): the probability of hypothesis h given
-the data D. This is known as posterior
-probability.
+  the data D. This is known as posterior
+  probability.
 ● P(D|h): the probability of data d given that the
-hypothesis h was true. This is known as
-posterior probability.
+  hypothesis h was true. This is known as
+  posterior probability.
 ```
 
 
