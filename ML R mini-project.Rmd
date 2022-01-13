@@ -155,8 +155,8 @@ plt.xlabel('number of components')
 plt.ylabel('cumulative explained variance');
 plt.show()
 
-PCAX = PCA(n_components =7)
-PCAX.fit_transform(X)
+PCAXX = PCA(n_components = 7)
+PCAX = PCAXX.fit_transform(X)
 
 
 
