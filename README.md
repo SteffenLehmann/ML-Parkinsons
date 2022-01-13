@@ -4,134 +4,94 @@
 
 
 ## Parkinson's disease Mini-project
+A detection problem
 
 22 features
 
 Status:
-
 ```
 ● (one) - Parkinson's
 ● (zero) - Healthy
 ```
-A detection problem
-
 
 ## Feature selection - Correlation check
-![image info](./images/image.png)
-Removed labels + names
 
-Removed > 0.9 correlated
-features
+<p align="left">
+  <img src="./Images/Cortest.png">
+</p>
 
-Top down approach
-
-11 features
-
+```
+● Removed labels + names
+● Removed > 0.9 correlated features
+● Top down approach to feature selection
+● From 22 to 11 features
+```
 
 ## Standardizing the data
 
 z = (x - u) / s
-
-u = mean of the samples
-s = SD of the samples
+```
+● u = mean of the samples
+● s = SD of the samples
+```
+Raw Data             | Standardized Data
+:-------------------------:|:-------------------------:
+![](./Images/Rawnumbers.png)  |  ![](./Images/Scalednumbers.png)
 
 
 ## Normality check and distributions
+```
+● Shapiro-Wilk test of normality
+● Means and variance
+● Histograms
+● Means and Covariance
+```
+![](./Images/distributions.png) 
+                        
 
-MDVP:Fhi(Hz) - Maximum vocal fundamental frequency
-has outliers
+## Dimensionality reduction: PCA - unsupervised
+```
+● Before and after removing the highly correlated features
+● Visualised using PCA (n=2)
+```
 
-Shapiro-Wilk test of normality
-
-Means and Covariance
+22 features            | 11 features
+:-------------------------:|:-------------------------:
+![](./Images/22PCA2.png)  |  ![](./Images/11PCA2.png)
 
 
 ## Dimensionality reduction: PCA - unsupervised
-
-Before removing > 0.9 correlated
-features
-
-Features = 22
-
-
-## Dimensionality reduction: PCA - unsupervised
-
-After removing > 0.9 correlated
-features
-
-Features = 11
-
-
-## Dimensionality reduction: PCA - unsupervised
-
-After removing > 0.9 correlated
-features
-
-Features = 11
-
-Retained 0.95 of the variance
-
-7 PCs
-
-
-## Principal Component Analysis - unsupervised
-
 ```
-● N is the number of scores in each set of data
-● X, Y are the mean of the N in the each data set
-● X i, Y i are the raw observation in each set
-● x i, y i is the i th deviation score in each set
+● After removing > 0.9 correlated features
+● Features = 11
+● Retained 0.95 of the variance
+● 7 PCs
 ```
-Covariance Matrix
-
-```
-Variance
-```
-
-## Principal Component Analysis
-
-Covariance Matrix
-
-A = covariance matrix
-
-v = eigenvector
-
-λ = scaler (EigenValues)
-
-I = identity matrix
+![](./Images/PCA.png)
 
 
 ## Principal Component Analysis
-
-Covariance Matrix
-
-EigenValues
-
-EigenVector
-
-
-## Principal Component Analysis
-
-The most important features
-in the covariance matrix
-
-Biggest contributors to
-eigenvalue (scaler)
+```
+● The most important features in the covariance matrix
+● Biggest contributors to eigenvalue (scaler)
+```
+![](./Images/PCABestFeatures.png)
 
 
 ## Detection Problem using supervised methods
 
-K fold (interactions): 5
-
-80/20 split
-
 ```
-● Gaussian naive bayes
-● Support vector Machine
-● Random forest
-● Neural network
+● ## Detection Problem using supervised methods
+● K fold (interactions): 5
+● R80/20 split
+● Supervised Methods
+    ● Gaussian naive bayes
+    ● Support vector Machine
+    ● Random forest
+    ● Neural network
+● On 11 and 7 features
 ```
-On 11 and 7 features
+![](./Images/Kfold'.png)
 
 
 ## Gaussian Naive Bayes
