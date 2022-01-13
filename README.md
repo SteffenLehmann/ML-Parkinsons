@@ -138,7 +138,7 @@ SVM Math        | ![](./Images/SVMMath.png)
 ● FP better than FN?
 ```
 
-![](./Images/ConfusionMatrix.png)
+![](./Images/ConfusionMatrix.PNG)
 
 
 ## Accuracy scores
