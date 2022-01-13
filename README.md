@@ -123,14 +123,6 @@ Raw Data             | Standardized Data
 
 ## Support Vector Machine Classifier - Supervised
 
-
-
-
-
-
-
-
-
 ```
 ● Cn= Parkinson’s and healthy
 ● Not the actual model
@@ -152,9 +144,8 @@ SVM Math        | ![](./Images/SVMMath.png)
 
 Worse accuracy with 22 features
 
-```
-SVC RFC NN GNB
-Standard (11) 82% (0.06) 79% (0.07) 79% (0.02) 74 % (0.05)
-PCA (7) 80% (0.06) 83% (0.08) 81% (0.04) 77% (0.03)
-```
+|               |     SVC    |     RFC    |     NN     |     GNB     |
+|---------------|:----------:|:----------:|:----------:|:-----------:|
+| Standard (11) | 82% (0.06) | 79% (0.07) | 79% (0.02) |  74% (0.05) |
+| PCA (7)       | 80% (0.06) | 83% (0.08) | 81% (0.04) |  77% (0.03) |
 
