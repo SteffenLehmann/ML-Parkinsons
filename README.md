@@ -75,7 +75,7 @@ Raw Data             | Standardized Data
 ● The most important features in the covariance matrix
 ● Biggest contributors to eigenvalue (scaler)
 ```
-![](./Images/PCABestFeatures.png)
+![](./Images/PCABestFeatures.PNG)
 
 
 ## Detection Problem using supervised methods
