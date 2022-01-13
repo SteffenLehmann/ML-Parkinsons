@@ -1,6 +1,6 @@
 # Parkinson's disease Mini-project
-
-### Steffen Lehmann
+This README file contains the presentation to explain the project
+### Steffen Lehmann. 
 
 
 ## Parkinson's disease Mini-project
@@ -119,60 +119,33 @@ Raw Data             | Standardized Data
   posterior probability.
 ```
 
+![](./Images/bayermath.png)
 
 ## Support Vector Machine Classifier - Supervised
 
-Cn= Parkinson’s and healthy
-
-Not the actual model
 
 
-## Support Vector Machine Classifier - Supervised
-
-Cn= Parkinson’s and healthy
-
-Not the actual model
-
-Margins
 
 
-## Was the sample Healthy or not?
 
-## The SVM model
 
-T threshold
 
-FP better than FN?
 
 ```
-TP
+● Cn= Parkinson’s and healthy
+● Not the actual model
+● Margins
 ```
+SVM Math        | ![](./Images/SVMMath.png)
+:-------------------------:|:-------------------------:
+![](./Images/SVMMargins.png)  |  ![](./Images/2DSVM'.png)
+## Confusion Matrix: Was the sample Healthy or not?
 ```
-FN
+● The SVM model
+● T threshold
+● FP better than FN?
 ```
-```
-FP
-```
-```
-TN
-```
-## Park
-
-## Healthy
-
-## Healthy
-
-## Park
-
-
-## Healthy Parkinson’s
-
-## Was the sample Healthy or not?
-
-● Recall
-● Precision
-● Accurarry
-
+![](./Images/Confusion Matrix.png)
 
 
 ## Accuracy scores
