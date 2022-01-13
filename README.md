@@ -7,16 +7,14 @@
 
 
 ## Parkinson's disease Mini-project
-A detection problem
 
-22 features
-
-Status:
 ```
-● (one) - Parkinson's
-● (zero) - Healthy
+● A detection problem
+● 22 features
+● Status:
+    ● (one) - Parkinson's
+    ● (zero) - Healthy
 ```
-
 ## Feature selection - Correlation check
 
 <p align="left">
