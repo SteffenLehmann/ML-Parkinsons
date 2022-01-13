@@ -1,6 +1,9 @@
 # Parkinson's disease Mini-project
-This README contains a revised version presentation that I used for my Machine learning exam.
-### Steffen Lehmann. 
+
+```
+● This README contains a revised version presentation that I used for my Machine learning exam.
+● I used R and Python for this project which is compiled to HTML using Rstudio
+``` 
 
 
 ## Parkinson's disease Mini-project
