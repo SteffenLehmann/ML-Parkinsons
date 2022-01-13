@@ -145,7 +145,7 @@ SVM Math        | ![](./Images/SVMMath.png)
 ● T threshold
 ● FP better than FN?
 ```
-![](./Images/Confusion Matrix.png)
+![](./Images/ConfusionMatrix.png)
 
 
 ## Accuracy scores
